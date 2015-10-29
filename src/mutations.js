@@ -41,6 +41,28 @@ export function updateApplication (application, fragments = updateApplicationDef
   };
 }
 
+const addApplicationSourceDefaultFragments = `
+  _id,
+  filename,
+  extension
+`;
+
+export function addApplicationSource (applicationId, data, fragments = addApplicationSourceDefaultFragments) {
+  return {
+    query: `
+      mutation addSourceToApplication ($applicationId: String!, $data: ApplicationSourceInput!) {
+        addSourceToApplication(applicationId: $applicationId, data: $data) {
+          ${fragments}
+        }
+      }
+    `,
+    params: {
+      applicationId,
+      data
+    }
+  };
+}
+
 const updateApplicationSourceDefaultFragments = `
   _id,
   filename,

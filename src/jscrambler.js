@@ -1,20 +1,18 @@
 import Q from 'q';
-import JScramblerClient from './client';
-import config from './config';
 
+import config from './config';
+import JScramblerClient from './client';
 import {
+  addApplicationSource,
   createApplication,
   updateApplication,
   updateApplicationSource,
   removeSourceFromApplication
 } from './mutations';
-
 import {
   getApplication,
   getApplicationSource
 } from './queries';
-
-const debug = !!process.env.DEBUG;
 
 export default
 /** @lends jScramblerFacade */
@@ -33,14 +31,17 @@ export default
   },
   getApplication (client, applicationId, fragments) {
     const deferred = Q.defer();
-    debug && console.log('Getting info', applicationId);
     client.get('/', getApplication(applicationId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   getApplicationSource (client, sourceId, fragments) {
     const deferred = Q.defer();
-    debug && console.log('Getting info', sourceId);
     client.get('/', getApplicationSource(sourceId, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  addApplicationSource (client, applicationId, applicationSource, fragments) {
+    const deferred = Q.defer();
+    client.post('/', addApplicationSource(applicationId, applicationSource, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   updateApplicationSource (client, applicationSource, fragments) {
@@ -50,7 +51,6 @@ export default
   },
   removeSourceFromApplication (client, sourceId, applicationId, fragments) {
     const deferred = Q.defer();
-    debug && console.log('Getting info', sourceId);
     client.post('/', removeSourceFromApplication(sourceId, applicationId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   }
