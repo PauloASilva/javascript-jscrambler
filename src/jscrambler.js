@@ -7,7 +7,8 @@ import {
   createApplication,
   updateApplication,
   updateApplicationSource,
-  removeSourceFromApplication
+  removeSourceFromApplication,
+  createTemplate
 } from './mutations';
 import {
   getApplication,
@@ -38,6 +39,11 @@ export default
   getApplicationSource (client, sourceId, fragments) {
     const deferred = Q.defer();
     client.get('/', getApplicationSource(sourceId, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  createTemplate (client, template, fragments) {
+    const deferred = Q.defer();
+    client.post('/', createTemplate(template, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   getTemplates (client, fragments) {

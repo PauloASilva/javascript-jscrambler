@@ -103,3 +103,25 @@ export function removeSourceFromApplication (sourceId, applicationId, fragments 
     }
   };
 }
+
+const createTemplateDefaultFragments = `
+  _id,
+  name,
+  description,
+  parameters
+`;
+
+export function createTemplate (template, fragments = createTemplateDefaultFragments) {
+  return {
+    query: `
+      mutation createTemplate ($data: TemplateInput!) {
+        createTemplate (data: $data) {
+          ${fragments}
+        }
+      }
+    `,
+    params: {
+      data: template
+    }
+  };
+}
