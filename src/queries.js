@@ -44,3 +44,21 @@ export function getApplicationSource (sourceId, fragments = getApplicationSource
     })
   };
 }
+
+const getTemplatesDefaultFragments = `
+  _id,
+  parameters
+`;
+
+export function getTemplates (fragments = getTemplatesDefaultFragments) {
+  return {
+    query: `
+      query getTemplates {
+        templates {
+          ${fragments}
+        }
+      }
+    `,
+    params: '{}'
+  }
+}
