@@ -125,3 +125,22 @@ export function createTemplate (template, fragments = createTemplateDefaultFragm
     }
   };
 }
+
+const removeTemplateDefaultFragments = `
+  _id
+`;
+
+export function removeTemplate (id, fragments = removeTemplateDefaultFragments) {
+  return {
+    query: `
+      mutation removeTemplate($_id: String!) {
+        removeTemplate (_id: $_id) {
+          ${fragments}
+        }
+      }
+    `,
+    params: {
+      _id: id
+    }
+  };
+}

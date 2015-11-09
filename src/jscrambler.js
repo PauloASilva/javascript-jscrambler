@@ -8,7 +8,8 @@ import {
   updateApplication,
   updateApplicationSource,
   removeSourceFromApplication,
-  createTemplate
+  createTemplate,
+  removeTemplate
 } from './mutations';
 import {
   getApplication,
@@ -44,6 +45,11 @@ export default
   createTemplate (client, template, fragments) {
     const deferred = Q.defer();
     client.post('/', createTemplate(template, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  removeTemplate (client, id) {
+    const deferred = Q.defer();
+    client.post('/', removeTemplate(id), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   getTemplates (client, fragments) {
