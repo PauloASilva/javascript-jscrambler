@@ -17,6 +17,9 @@ import {
   getTemplates
 } from './queries';
 
+import request from 'superagent';
+import path from 'path';
+
 export default
 /** @lends jScramblerFacade */
 {
@@ -62,6 +65,15 @@ export default
     client.post('/', addApplicationSource(applicationId, applicationSource, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
+  addApplicationSourceFromURL (client, applicationId, url, fragments) {
+    const deferred = Q.defer();
+    return getFileFromUrl(client, url)
+      .then(function(file) {
+        client.post('/', addApplicationSource(applicationId, file, fragments), responseHandler(deferred));
+        return deferred.promise;
+      })
+      .then(errorHandler);
+  },
   updateApplicationSource (client, applicationSource, fragments) {
     const deferred = Q.defer();
     client.post('/', updateApplicationSource(applicationSource, fragments), responseHandler(deferred));
@@ -73,6 +85,24 @@ export default
     return deferred.promise.then(errorHandler);
   }
 };
+
+function getFileFromUrl (client, url) {
+  const deferred = Q.defer();
+  request.get(url).end(function (err, res) {
+    var file;
+    if(err) {
+      deferred.reject(err);
+    } else {
+      file = {
+        content: res.text,
+        filename: path.basename(url),
+        extension: path.extname(url).substr(1)
+      };
+      deferred.resolve(file);
+    }
+  });
+  return deferred.promise;
+}
 
 function responseHandler (deferred) {
   return (err, res) => {
