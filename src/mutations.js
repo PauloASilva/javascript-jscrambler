@@ -133,7 +133,7 @@ const removeTemplateDefaultFragments = `
 export function removeTemplate (id, fragments = removeTemplateDefaultFragments) {
   return {
     query: `
-      mutation removeTemplate($_id: String!) {
+      mutation removeTemplate ($_id: String!) {
         removeTemplate (_id: $_id) {
           ${fragments}
         }
@@ -143,4 +143,25 @@ export function removeTemplate (id, fragments = removeTemplateDefaultFragments) 
       _id: id
     }
   };
+}
+
+const updateTemplateDefaultFragments = `
+  _id,
+  parameters
+`;
+
+export function updateTemplate (template, fragments = updateTemplateDefaultFragments) {
+  return {
+    query: `
+      mutation updateTemplate ($templateId: ID!) {
+        updateTemplate (_id: $templateId, data: $data) {
+          ${fragments}
+        }
+      }
+    `,
+    params: {
+      templateId: template._id,
+      data: template
+    }
+  }
 }
