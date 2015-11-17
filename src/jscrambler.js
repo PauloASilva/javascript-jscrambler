@@ -1,3 +1,5 @@
+import path from 'path';
+import request from 'superagent';
 import Q from 'q';
 
 import config from './config';
@@ -9,16 +11,14 @@ import {
   updateApplicationSource,
   removeSourceFromApplication,
   createTemplate,
-  removeTemplate
+  removeTemplate,
+  updateTemplate
 } from './mutations';
 import {
   getApplication,
   getApplicationSource,
   getTemplates
 } from './queries';
-
-import request from 'superagent';
-import path from 'path';
 
 export default
 /** @lends jScramblerFacade */
@@ -82,6 +82,11 @@ export default
   removeSourceFromApplication (client, sourceId, applicationId, fragments) {
     const deferred = Q.defer();
     client.post('/', removeSourceFromApplication(sourceId, applicationId, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  updateTemplate (client, template, fragments) {
+    const deferred = Q.defer();
+    client.post('/', updateTemplate(template, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   }
 };
