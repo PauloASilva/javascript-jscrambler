@@ -153,7 +153,7 @@ const updateTemplateDefaultFragments = `
 export function updateTemplate (template, fragments = updateTemplateDefaultFragments) {
   return {
     query: `
-      mutation updateTemplate ($templateId: ID!) {
+      mutation updateTemplate ($templateId: ID!, $data: TemplateInput!) {
         updateTemplate (_id: $templateId, data: $data) {
           ${fragments}
         }
