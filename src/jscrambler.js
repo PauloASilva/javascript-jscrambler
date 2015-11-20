@@ -16,6 +16,7 @@ import {
 } from './mutations';
 import {
   getApplication,
+  getApplications,
   getApplicationSource,
   getTemplates
 } from './queries';
@@ -58,6 +59,11 @@ export default
   getTemplates (client, fragments) {
     const deferred = Q.defer();
     client.get('/', getTemplates(fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  getApplications (client, fragments) {
+    const deferred = Q.defer();
+    client.get('/', getApplications(fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   addApplicationSource (client, applicationId, applicationSource, fragments) {

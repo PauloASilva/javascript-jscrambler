@@ -62,3 +62,23 @@ export function getTemplates (fragments = getTemplatesDefaultFragments) {
     params: '{}'
   }
 }
+
+const getApplicationsDefaultFragments = `
+  _id,
+  name,
+  protections,
+  parameters
+`;
+
+export function getApplications (fragments = getApplicationsDefaultFragments) {
+  return {
+    query: `
+      query getApplications {
+        applications {
+          ${fragments}
+        }
+      }
+    `,
+    params: '{}'
+  }
+}
