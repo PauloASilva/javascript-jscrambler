@@ -13,7 +13,8 @@ import {
   removeSourceFromApplication,
   createTemplate,
   removeTemplate,
-  updateTemplate
+  updateTemplate,
+  createApplicationProtection
 } from './mutations';
 import {
   getApplication,
@@ -100,6 +101,9 @@ export default
     const deferred = Q.defer();
     client.post('/', updateTemplate(template, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
+  },
+  createApplicationProtectionWS (client, ws, applicationId, fragments) {
+    ws.emit('applicationProtection', createApplicationProtection(applicationId, fragments));
   }
 };
 

@@ -1,11 +1,13 @@
 import clone from 'lodash.clone';
 import crypto from 'crypto';
 import defaults from 'lodash.defaults';
-//import fs from 'fs';
 import keys from 'lodash.keys';
 import request from 'superagent';
 import url from 'url';
+
 import cfg from './config';
+
+//import fs from 'fs';
 
 const debug = !!process.env.DEBUG;
 
@@ -29,6 +31,9 @@ function JScramblerClient (options) {
   }
 
   options.keys = defaults(options.keys || {}, cfg.keys);
+
+  this.webSocket = options.webSocket;
+
   /**
    * @member
    */
