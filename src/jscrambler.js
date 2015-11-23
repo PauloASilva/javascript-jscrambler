@@ -14,7 +14,8 @@ import {
   createTemplate,
   removeTemplate,
   updateTemplate,
-  createApplicationProtection
+  createApplicationProtection,
+  duplicateApplication
 } from './mutations';
 import {
   getApplication,
@@ -31,6 +32,11 @@ export default
   createApplication (client, data, fragments) {
     const deferred = Q.defer();
     client.post('/', createApplication(data, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  duplicateApplication (client, data, fragments) {
+    const deferred = Q.defer();
+    client.post('/', duplicateApplication(data, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   removeApplication (client, id) {
