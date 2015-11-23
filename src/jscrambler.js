@@ -7,6 +7,7 @@ import JScramblerClient from './client';
 import {
   addApplicationSource,
   createApplication,
+  removeApplication,
   updateApplication,
   updateApplicationSource,
   removeSourceFromApplication,
@@ -29,6 +30,11 @@ export default
   createApplication (client, data, fragments) {
     const deferred = Q.defer();
     client.post('/', createApplication(data, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  removeApplication (client, id) {
+    const deferred = Q.defer();
+    client.post('/', removeApplication(id), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   updateApplication (client, application, fragments) {

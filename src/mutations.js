@@ -19,6 +19,25 @@ export function createApplication (data, fragments = createApplicationDefaultFra
   };
 }
 
+const removeApplicationDefaultFragments = `
+  _id
+`;
+
+export function removeApplication (id, fragments = removeApplicationDefaultFragments) {
+  return {
+    query: `
+      mutation removeApplication ($_id: String!) {
+        removeApplication (_id: $_id) {
+          ${fragments}
+        }
+      }
+    `,
+    params: {
+      _id: id
+    }
+  };
+}
+
 const updateApplicationDefaultFragments = `
   _id,
   createdAt,
