@@ -108,8 +108,10 @@ export default
     client.post('/', updateTemplate(template, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
-  createApplicationProtectionWS (client, ws, applicationId, fragments) {
-    ws.emit('applicationProtection', createApplicationProtection(applicationId, fragments));
+  createApplicationProtection (client, applicationId, fragments) {
+    const deferred = Q.defer();
+    client.post('/', createApplicationProtection(applicationId, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
   }
 };
 
