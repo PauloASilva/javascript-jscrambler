@@ -3,6 +3,7 @@ import request from 'superagent';
 import Q from 'q';
 
 import config from './config';
+import generateSignedParams from './generate-signed-params';
 import JScramblerClient from './client';
 import {
   addApplicationSource,
@@ -28,7 +29,8 @@ export default
 /** @lends jScramblerFacade */
 {
   Client: JScramblerClient,
-  config: config,
+  config,
+  generateSignedParams,
   createApplication (client, data, fragments) {
     const deferred = Q.defer();
     client.post('/', createApplication(data, fragments), responseHandler(deferred));

@@ -6,6 +6,7 @@ import request from 'superagent';
 import url from 'url';
 
 import cfg from './config';
+import generateSignedParams from './generate-signed-params';
 
 //import fs from 'fs';
 
@@ -32,100 +33,12 @@ function JScramblerClient (options) {
 
   options.keys = defaults(options.keys || {}, cfg.keys);
 
-  this.webSocket = options.webSocket;
-
   /**
    * @member
    */
   this.options = defaults(options || {}, cfg);
   if (!this.options.keys.accessKey || !this.options.keys.secretKey)
     throw new Error('Missing access or secret keys');
-}
-/**
- * It builds a query string sorted by key.
- * @private
- * @static
- * @param {Object} params
- * @memberof JScramblerClient
- * @returns {String} The query string.
- */
-function buildSortedQuery (params) {
-  // Sorted keys
-  var _keys = keys(params).sort();
-  var query = '';
-  for (var i = 0, l = _keys.length; i < l; i++)
-    query += encodeURIComponent(_keys[i]) + '=' + encodeURIComponent(params[_keys[i]]) + '&';
-  query = query
-            .replace(/\*/g, '%2A')
-            .replace(/[!'()]/g, escape)
-            .replace(/%7E/g, '~')
-            .replace(/\+/g, '%20');
-  // Strip the last separator and return
-  return query.substring(0, query.length - 1);
-}
-/**
- * Generates the needed HMAC signature for the request.
- * @memberof JScramblerClient
- * @param {String} method
- * @param {String} path
- * @param {Object} params
- * @returns {String} The digested signature.
- */
-function generateHmacSignature (method, path, params) {
-  var paramsCopy = clone(params);
-  for (var key in params) {
-    if (key.indexOf('file_') !== -1) {
-      paramsCopy[key] = crypto.createHash('md5').update(
-        fs.readFileSync(params[key].file)).digest('hex');
-    }
-  }
-  var signatureData = method.toUpperCase() + ';' + this.options.host.toLowerCase() +
-    ';' + path + ';' + buildSortedQuery(paramsCopy);
-  debug && console.log('Signature data: ' + signatureData);
-  var hmac = crypto.createHmac('sha256', this.options.keys.secretKey.toUpperCase());
-  hmac.update(signatureData);
-  return hmac.digest('base64');
-}
-/**
- * Iterate each passed file inside params.files and creates the corresponding
- params.file_{index}. It deletes params.files after iterating.
- * @private
- * @static
- * @memberof JScramblerClient
- * @param {String} method
- * @param {String} path
- * @param {Object} params
- */
-function handleFileParams (params) {
-  if (params.files) {
-    for (var i = 0, l = params.files.length; i < l; i++) {
-      params['file_' + i] = {
-        file: params.files[i],
-        content_type: 'application/octet-stream'
-      };
-    }
-    delete params.files;
-  }
-}
-/**
- * Signs all the parameters.
- ^ @private
- * @memberof JScramblerClient
- * @param {String} method
- * @param {String} path
- * @param {Object} params
- * @returns {Object} Params containing the access_key, timestamp and signature
- properties.
- */
-function signedParams (method, path, params) {
-  params = defaults(clone(params), {
-    access_key: this.options.keys.accessKey,
-    timestamp: new Date().toISOString(),
-    user_agent: 'Node'
-  });
-  if (method === 'POST' && params.files) handleFileParams(params);
-  params.signature = generateHmacSignature.call(this, method, path, params);
-  return params;
 }
 /**
  * Delete request.
@@ -157,13 +70,13 @@ JScramblerClient.prototype.request = function (method, path, params = {}, callba
 
   var _keys = keys(params);
   for (var i = 0, l = _keys.length; i < l; i++) {
-    if(params[_keys[i]] instanceof Array && _keys[i] !== 'files') {
+    if(params[_keys[i]] instanceof Array) {
       params[_keys[i]] = params[_keys[i]].join(',');
     }
   }
 
   // If post sign data and set the request as multipart
-  signedData = signedParams.apply(this, arguments);
+  signedData = generateSignedParams(method, path, this.options.host, this.options.keys, params);
 
   // Format URL
   var protocol = this.options.port === 443 ? 'https' : 'http';
