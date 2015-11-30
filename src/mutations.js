@@ -126,17 +126,17 @@ export function updateApplicationSource (applicationSource, fragments = updateAp
 const removeSourceFromApplicationDefaultFragments = `
 `;
 
-export function removeSourceFromApplication (sourceId, applicationId, fragments = removeSourceFromApplicationDefaultFragments) {
+export function removeSourceFromApplication (filename, applicationId, fragments = removeSourceFromApplicationDefaultFragments) {
   return {
     query: `
-      mutation removeSource ($_id: String!, $applicationId: String!) {
-        removeSource (_id: $_id, applicationId: $applicationId) {
+      mutation removeSource ($filename: String!, $applicationId: String!) {
+        removeSource (filename: $filename, applicationId: $applicationId) {
           ${fragments}
         }
       }
     `,
     params: {
-      _id: sourceId,
+      filename,
       applicationId
     }
   };
