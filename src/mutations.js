@@ -57,6 +57,26 @@ export function removeApplication (id, fragments = removeApplicationDefaultFragm
   };
 }
 
+const removeProtectionDefaultFragments = `
+  _id
+`;
+
+export function removeProtection (id, appId, fragments = removeProtectionDefaultFragments) {
+  return {
+    query: `
+      mutation removeProtection ($_id: String!, $applicationId: String!) {
+        removeProtection (_id: $_id, applicationId: $applicationId) {
+          ${fragments}
+        }
+      }
+    `,
+    params: {
+      _id: id,
+      applicationId: appId
+    }
+  };
+}
+
 const updateApplicationDefaultFragments = `
   _id,
   createdAt,

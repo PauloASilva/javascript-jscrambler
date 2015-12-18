@@ -16,6 +16,7 @@ import {
   removeTemplate,
   updateTemplate,
   createApplicationProtection,
+  removeProtection,
   duplicateApplication
 } from './mutations';
 import {
@@ -44,6 +45,11 @@ export default
   removeApplication (client, id) {
     const deferred = Q.defer();
     client.post('/', removeApplication(id), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  removeProtection (client, id, appId, fragments) {
+    const deferred = Q.defer();
+    client.post('/', removeProtection(id, appId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   updateApplication (client, application, fragments) {
