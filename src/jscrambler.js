@@ -21,6 +21,7 @@ import {
 } from './mutations';
 import {
   getApplication,
+  getApplicationProtections,
   getApplications,
   getApplicationSource,
   getTemplates
@@ -65,6 +66,11 @@ export default
   getApplicationSource (client, sourceId, fragments) {
     const deferred = Q.defer();
     client.get('/', getApplicationSource(sourceId, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  getApplicationProtections (client, applicationId, params, fragments) {
+    const deferred = Q.defer();
+    client.get('/', getApplicationProtections(applicationId, params, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   createTemplate (client, template, fragments) {

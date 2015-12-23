@@ -45,6 +45,29 @@ export function getApplicationSource (sourceId, fragments = getApplicationSource
   };
 }
 
+const getApplicationProtectionsDefaultFragments = `
+  _id,
+  sources,
+  parameters,
+  finishedAt
+`;
+
+export function getApplicationProtections (applicationId, params, fragments = getApplicationSourceDefaultFragments) {
+  return {
+    query: `
+      query getApplicationProtections ($applicationId: String!, $sort: String, $order: String, $limit: Int, $page: Int, $search: String, $s: String) {
+        applicationProtections(_id: $applicationId, sort: $sort, order: $order, limit: $limit, page: $page, search: $search, s: $s) {
+          ${fragments}
+        }
+      }
+    `,
+    params: JSON.stringify({
+      applicationId,
+      ...params
+    })
+  };
+}
+
 const getTemplatesDefaultFragments = `
   _id,
   parameters
