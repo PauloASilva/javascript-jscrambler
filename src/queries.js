@@ -52,7 +52,7 @@ const getApplicationProtectionsDefaultFragments = `
   finishedAt
 `;
 
-export function getApplicationProtections (applicationId, params, fragments = getApplicationSourceDefaultFragments) {
+export function getApplicationProtections (applicationId, params, fragments = getApplicationProtectionsDefaultFragments) {
   return {
     query: `
       query getApplicationProtections ($applicationId: String!, $sort: String, $order: String, $limit: Int, $page: Int, $search: String, $s: String) {
@@ -64,6 +64,25 @@ export function getApplicationProtections (applicationId, params, fragments = ge
     params: JSON.stringify({
       applicationId,
       ...params
+    })
+  };
+}
+
+const getApplicationProtectionsCountDefaultFragments = `
+  count
+`;
+
+export function getApplicationProtectionsCount (applicationId, fragments = getApplicationProtectionsCountDefaultFragments) {
+  return {
+    query: `
+      query getApplicationProtectionsCount ($applicationId: String!) {
+        applicationProtectionsCount(_id: $applicationId) {
+          ${fragments}
+        }
+      }
+    `,
+    params: JSON.stringify({
+      applicationId
     })
   };
 }

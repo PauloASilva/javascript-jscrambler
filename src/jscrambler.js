@@ -22,6 +22,7 @@ import {
 import {
   getApplication,
   getApplicationProtections,
+  getApplicationProtectionsCount,
   getApplications,
   getApplicationSource,
   getTemplates
@@ -71,6 +72,11 @@ export default
   getApplicationProtections (client, applicationId, params, fragments) {
     const deferred = Q.defer();
     client.get('/', getApplicationProtections(applicationId, params, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  getApplicationProtectionsCount (client, applicationId, fragments) {
+    const deferred = Q.defer();
+    client.get('/', getApplicationProtectionsCount(applicationId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   createTemplate (client, template, fragments) {
