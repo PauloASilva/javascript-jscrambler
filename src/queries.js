@@ -102,7 +102,7 @@ export function getTemplates (fragments = getTemplatesDefaultFragments) {
       }
     `,
     params: '{}'
-  }
+  };
 }
 
 const getApplicationsDefaultFragments = `
@@ -122,5 +122,33 @@ export function getApplications (fragments = getApplicationsDefaultFragments) {
       }
     `,
     params: '{}'
-  }
+  };
+}
+
+const getProtectionDefaultFragments = {
+  application: `
+    name
+  `,
+  applicationProtection: `
+    _id
+  `
+};
+
+export function getProtection (applicationId, protectionId, fragments = getProtectionDefaultFragments) {
+  return {
+    query: `
+      query getProtection ($applicationId: String!, $protectionId: String!) {
+        application (_id: $applicationId) {
+          ${fragments.application}
+        }
+        applicationProtection (_id: $protectionId) {
+          ${fragments.applicationProtection}
+        }
+      }
+    `,
+    params: JSON.stringify({
+      applicationId,
+      protectionId
+    })
+  };
 }

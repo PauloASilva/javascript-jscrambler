@@ -25,7 +25,8 @@ import {
   getApplicationProtectionsCount,
   getApplications,
   getApplicationSource,
-  getTemplates
+  getTemplates,
+  getProtection
 } from './queries';
 
 export default
@@ -131,6 +132,11 @@ export default
   createApplicationProtection (client, applicationId, fragments) {
     const deferred = Q.defer();
     client.post('/', createApplicationProtection(applicationId, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  getApplicationProtection (client, applicationId, protectionId, fragments) {
+    const deferred = Q.defer();
+    client.get('/', getProtection(applicationId, protectionId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   }
 };
