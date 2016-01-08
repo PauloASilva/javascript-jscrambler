@@ -37,106 +37,106 @@ export default
   generateSignedParams,
   createApplication (client, data, fragments) {
     const deferred = Q.defer();
-    client.post('/', createApplication(data, fragments), responseHandler(deferred));
+    client.post('/application', createApplication(data, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   duplicateApplication (client, data, fragments) {
     const deferred = Q.defer();
-    client.post('/', duplicateApplication(data, fragments), responseHandler(deferred));
+    client.post('/application', duplicateApplication(data, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   removeApplication (client, id) {
     const deferred = Q.defer();
-    client.post('/', removeApplication(id), responseHandler(deferred));
+    client.post('/application', removeApplication(id), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   removeProtection (client, id, appId, fragments) {
     const deferred = Q.defer();
-    client.post('/', removeProtection(id, appId, fragments), responseHandler(deferred));
+    client.post('/application', removeProtection(id, appId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   updateApplication (client, application, fragments) {
     const deferred = Q.defer();
-    client.post('/', updateApplication(application, fragments), responseHandler(deferred));
+    client.post('/application', updateApplication(application, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   getApplication (client, applicationId, fragments) {
     const deferred = Q.defer();
-    client.get('/', getApplication(applicationId, fragments), responseHandler(deferred));
+    client.get('/application', getApplication(applicationId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   getApplicationSource (client, sourceId, fragments) {
     const deferred = Q.defer();
-    client.get('/', getApplicationSource(sourceId, fragments), responseHandler(deferred));
+    client.get('/application', getApplicationSource(sourceId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   getApplicationProtections (client, applicationId, params, fragments) {
     const deferred = Q.defer();
-    client.get('/', getApplicationProtections(applicationId, params, fragments), responseHandler(deferred));
+    client.get('/application', getApplicationProtections(applicationId, params, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   getApplicationProtectionsCount (client, applicationId, fragments) {
     const deferred = Q.defer();
-    client.get('/', getApplicationProtectionsCount(applicationId, fragments), responseHandler(deferred));
+    client.get('/application', getApplicationProtectionsCount(applicationId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   createTemplate (client, template, fragments) {
     const deferred = Q.defer();
-    client.post('/', createTemplate(template, fragments), responseHandler(deferred));
+    client.post('/application', createTemplate(template, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   removeTemplate (client, id) {
     const deferred = Q.defer();
-    client.post('/', removeTemplate(id), responseHandler(deferred));
+    client.post('/application', removeTemplate(id), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   getTemplates (client, fragments) {
     const deferred = Q.defer();
-    client.get('/', getTemplates(fragments), responseHandler(deferred));
+    client.get('/application', getTemplates(fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   getApplications (client, fragments) {
     const deferred = Q.defer();
-    client.get('/', getApplications(fragments), responseHandler(deferred));
+    client.get('/application', getApplications(fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   addApplicationSource (client, applicationId, applicationSource, fragments) {
     const deferred = Q.defer();
-    client.post('/', addApplicationSource(applicationId, applicationSource, fragments), responseHandler(deferred));
+    client.post('/application', addApplicationSource(applicationId, applicationSource, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   addApplicationSourceFromURL (client, applicationId, url, fragments) {
     const deferred = Q.defer();
     return getFileFromUrl(client, url)
       .then(function(file) {
-        client.post('/', addApplicationSource(applicationId, file, fragments), responseHandler(deferred));
+        client.post('/application', addApplicationSource(applicationId, file, fragments), responseHandler(deferred));
         return deferred.promise;
       })
       .then(errorHandler);
   },
   updateApplicationSource (client, applicationSource, fragments) {
     const deferred = Q.defer();
-    client.post('/', updateApplicationSource(applicationSource, fragments), responseHandler(deferred));
+    client.post('/application', updateApplicationSource(applicationSource, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   removeSourceFromApplication (client, sourceId, applicationId, fragments) {
     const deferred = Q.defer();
-    client.post('/', removeSourceFromApplication(sourceId, applicationId, fragments), responseHandler(deferred));
+    client.post('/application', removeSourceFromApplication(sourceId, applicationId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   updateTemplate (client, template, fragments) {
     const deferred = Q.defer();
-    client.post('/', updateTemplate(template, fragments), responseHandler(deferred));
+    client.post('/application', updateTemplate(template, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   createApplicationProtection (client, applicationId, fragments) {
     const deferred = Q.defer();
-    client.post('/', createApplicationProtection(applicationId, fragments), responseHandler(deferred));
+    client.post('/application', createApplicationProtection(applicationId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   getApplicationProtection (client, applicationId, protectionId, fragments) {
     const deferred = Q.defer();
-    client.get('/', getProtection(applicationId, protectionId, fragments), responseHandler(deferred));
+    client.get('/application', getProtection(applicationId, protectionId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   }
 };

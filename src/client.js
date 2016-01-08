@@ -68,6 +68,10 @@ JScramblerClient.prototype.get = function (path, params, callback) {
 JScramblerClient.prototype.request = function (method, path, params = {}, callback = null) {
   var signedData;
 
+  if (this.token) {
+    params.token = this.token;
+  }
+
   var _keys = keys(params);
   for (var i = 0, l = _keys.length; i < l; i++) {
     if(params[_keys[i]] instanceof Array) {
