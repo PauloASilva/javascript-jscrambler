@@ -37,8 +37,6 @@ function JScramblerClient (options) {
    * @member
    */
   this.options = defaults(options || {}, cfg);
-  if (!this.options.keys.accessKey || !this.options.keys.secretKey)
-    throw new Error('Missing access or secret keys');
 }
 /**
  * Delete request.
@@ -80,7 +78,11 @@ JScramblerClient.prototype.request = function (method, path, params = {}, callba
   }
 
   // If post sign data and set the request as multipart
-  signedData = generateSignedParams(method, path, this.options.host, this.options.keys, params);
+  if (this.options.keys.accessKey && this.options.keys.secretKey) {
+    signedData = generateSignedParams(method, path, this.options.host, this.options.keys, params);
+  } else {
+    signedData = params;
+  }
 
   // Format URL
   var protocol = this.options.port === 443 ? 'https' : 'http';
