@@ -3,12 +3,14 @@ import crypto from 'crypto';
 import defaults from 'lodash.defaults';
 import keys from 'lodash.keys';
 
+const debug = !!process.env.DEBUG;
+
 export default function signedParams (method, path, host, keys, params = {}) {
   params = defaults(clone(params), {
     access_key: keys.accessKey,
     timestamp: new Date().toISOString()
   });
-  params.signature = generateHmacSignature.call(this, method, path, host, keys, params);
+  params.signature = generateHmacSignature(method, path, host, keys, params);
   return params;
 }
 
@@ -26,8 +28,9 @@ function buildSortedQuery (params) {
   // Sorted keys
   var _keys = keys(params).sort();
   var query = '';
-  for (var i = 0, l = _keys.length; i < l; i++)
+  for (var i = 0, l = _keys.length; i < l; i++) {
     query += encodeURIComponent(_keys[i]) + '=' + encodeURIComponent(params[_keys[i]]) + '&';
+  }
   query = query
     .replace(/\*/g, '%2A')
     .replace(/[!'()]/g, escape)
