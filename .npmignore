@@ -1,3 +1,4 @@
+*.log
 .jscramblerrc
 jscrambler_keys.json
 config.json

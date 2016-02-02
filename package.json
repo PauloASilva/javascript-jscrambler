@@ -58,6 +58,6 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-jasmine-node": "^0.3.1"
   },
-  "main": "lib/index",
-  "bin": "bin/jscrambler"
+  "main": "dist/lib/index",
+  "bin": "dist/bin/jscrambler"
 }
