@@ -23,7 +23,8 @@
   "scripts": {
     "build": "grunt build",
     "test": "grunt test 2> /dev/null",
-    "watch": "grunt watch"
+    "watch": "grunt watch",
+    "prepublish": "npm run build"
   },
   "engines": {
     "node": ">= 0.8.0"
