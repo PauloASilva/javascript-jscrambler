@@ -1,3 +1,5 @@
-config.json
+.jscramblerrc
 jscrambler_keys.json
-results/
+config.json
+results
+src

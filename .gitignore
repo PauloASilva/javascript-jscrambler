@@ -1,7 +1,8 @@
+.jscramblerrc
 jscrambler_keys.json
+config.json
 node_modules
 npm-debug.log
-results/
+results
 tmp
-.*
 test.js

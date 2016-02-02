@@ -144,6 +144,10 @@ export function updateApplicationSource (applicationSource, fragments = updateAp
 }
 
 const removeSourceFromApplicationDefaultFragments = `
+  _id,
+  sources {
+    filename
+  }
 `;
 
 export function removeSourceFromApplication (filename, applicationId, fragments = removeSourceFromApplicationDefaultFragments) {

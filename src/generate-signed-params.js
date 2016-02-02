@@ -18,7 +18,7 @@ function generateHmacSignature (method, path, host, keys, params) {
   var paramsCopy = clone(params);
   var signatureData = method.toUpperCase() + ';' + host.toLowerCase() +
     ';' + path + ';' + buildSortedQuery(paramsCopy);
-  typeof debug !== 'undefined' && debug && console.log('Signature data: ' + signatureData);
+  debug && console.log('Signature data: ' + signatureData);
   var hmac = crypto.createHmac('sha256', keys.secretKey.toUpperCase());
   hmac.update(signatureData);
   return hmac.digest('base64');

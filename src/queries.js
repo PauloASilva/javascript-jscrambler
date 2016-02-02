@@ -130,7 +130,8 @@ const getProtectionDefaultFragments = {
     name
   `,
   applicationProtection: `
-    _id
+    _id,
+    state
   `
 };
 

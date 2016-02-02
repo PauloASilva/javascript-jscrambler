@@ -8,8 +8,6 @@ import url from 'url';
 import cfg from './config';
 import generateSignedParams from './generate-signed-params';
 
-//import fs from 'fs';
-
 const debug = !!process.env.DEBUG;
 
 /**
@@ -19,7 +17,6 @@ const debug = !!process.env.DEBUG;
  * @param {String} options.secretKey
  * @param {String} [options.host=api.jscrambler.com]
  * @param {String} [options.port=443]
- * @param {String} [options.apiVersion=3]
  * @author José Magalhães (magalhas@gmail.com)
  * @license MIT <http://opensource.org/licenses/MIT>
  */
@@ -53,8 +50,8 @@ JScramblerClient.prototype.delete = function (path, params, callback) {
  * @param {Object} params
  * @param {Callback} callback
  */
-JScramblerClient.prototype.get = function (path, params, callback) {
-  this.request('GET', path, params, callback);
+JScramblerClient.prototype.get = function (path, params, callback, isJSON = true) {
+  this.request('GET', path, params, callback, isJSON);
 };
 /**
  * HTTP request.
@@ -63,7 +60,7 @@ JScramblerClient.prototype.get = function (path, params, callback) {
  * @param {Object} params
  * @param {Callback} callback
  */
-JScramblerClient.prototype.request = function (method, path, params = {}, callback = null) {
+JScramblerClient.prototype.request = function (method, path, params = {}, callback = null, isJSON = true) {
   var signedData;
 
   if (this.token) {
@@ -93,7 +90,13 @@ JScramblerClient.prototype.request = function (method, path, params = {}, callba
     protocol: protocol
   }) + path;
 
-  const req = request[method.toLowerCase()](formatedUrl).type('json');
+  const req = request[method.toLowerCase()](formatedUrl);
+
+  if (isJSON) {
+    req.type('json');
+  } else {
+    req.buffer(true);
+  }
 
   if (method === 'POST' || method === 'PUT') {
     req.send(signedData);

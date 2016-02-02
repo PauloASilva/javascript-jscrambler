@@ -1,9 +1,11 @@
 #!/usr/bin/env node
-var commander = require('commander');
-var glob = require('glob');
-var jScrambler = require('../lib/jscrambler');
-var cli = require('../lib/cli');
-var path = require('path');
+
+import commander from 'commander';
+import glob from 'glob';
+import path from 'path';
+
+import jScrambler from '../src';
+import {mergeAndParseParams} from '../src/cli';
 
 commander
   .version(require('../package.json').version)
@@ -14,7 +16,7 @@ commander
   .option('-s, --secret-key <secretKey>', 'Secret key')
   .option('-h, --host [host]', 'Hostname')
   .option('-p, --port [port]', 'Port')
-  .option('-v, --api-version [apiVersion]', 'Version')
+  .option('-a, --applicationId [applicationId]', 'Application ID')
   .option('--asserts-elimination [assertsElimination]', 'Remove function definitions and function calls with a given name.')
   .option('--browser-os-lock [browserOsLock]', 'Locks a JavaScript application to run only on a specific Browser or Operating System.')
   .option('--constant-folding', 'Simplifies constant expressions at compile-time to make your code faster at run-time.')
@@ -46,13 +48,13 @@ commander
   .parse(process.argv);
 
 
-var globSrc;
+var globSrc, config;
 
 // If -c, --config file was provided
 if (commander.config) {
   // We're using `commander` (CLI) as the source of all truths, falling back to
   // the `config` provided by the file passed as argument
-  var config = require(path.resolve(commander.config, '.'));
+  config = require(path.resolve(commander.config, '.'));
   commander.output = commander.output || config.filesDest;
   // No need to validate if `keys` are set, later `client` will do so, but first
   // will try to load to the configuration through an `rc` file
@@ -62,7 +64,7 @@ if (commander.config) {
   }
   commander.host = commander.host || config.host;
   commander.port = commander.port || config.port;
-  commander.apiVersion = commander.apiVersion || config.apiVersion;
+  commander.applicationId = commander.applicationId || config.applicationId;
   globSrc = config.filesSrc;
 }
 
@@ -78,7 +80,7 @@ if (!globSrc) {
 
 var filesSrc = [];
 // Iterate `globSrc` to build a list of source files into `filesSrc`
-for (var i = 0, l = globSrc.length; i < l; ++i) {
+for (let i = 0, l = globSrc.length; i < l; ++i) {
   // Calling sync `glob` because async is pointless for the CLI use case
   // (as of now at least)
   filesSrc = filesSrc.concat(glob.sync(globSrc[i], {dot: true}));
@@ -87,51 +89,44 @@ for (var i = 0, l = globSrc.length; i < l; ++i) {
 // If there's no output directory and we're handling more than one file we can't
 // output to CLI so it's pointless to execute the command.
 if (!commander.output && filesSrc.length > 1) {
-  console.error('Destination must be specified unless only one file is used as input.');
+  console.error('Destination must be specified unless only one file is used as input');
   process.exit(1);
 }
 
-// Setup everything
-var dest = commander.output;
-var accessKey = commander.accessKey;
-var secretKey = commander.secretKey;
-var host = commander.host;
-var port = commander.port && parseInt(commander.port);
-var apiVersion = commander.apiVersion;
-var params = cli.mergeAndParseParams(commander, config && config.params);
-params.files = filesSrc;
+if (!commander.applicationId) {
+  console.error('Application ID is required but was not provided');
+  process.exit(1);
+}
+
+const {
+  applicationId,
+  output: filesDest,
+  accessKey,
+  secretKey,
+  host,
+  port
+} = commander;
+
+const params = mergeAndParseParams(commander, config && config.params);
 
 // Go, go, go
-try {
-  var client = new jScrambler.Client({
-    keys: {
-      accessKey: accessKey,
-      secretKey: secretKey
-    },
-    host: host,
-    port: port,
-    apiVersion: apiVersion
-  });
-
-  jScrambler
-    .uploadCode(client, params)
-    .then(function (res) {
-      return jScrambler.downloadCode(client, res.id);
-    })
-    .then(function (res) {
-      if (filesSrc.length === 1 && !dest) {
-        dest = function (buffer, file) {
-          process.stdout.write(buffer.toString());
-        };
-      }
-      return jScrambler.unzipProject(res, dest);
-    })
-    .fail(function (err) {
-      // Maybe we could throw here?
-      console.error(err);
-      process.exit(1);
-    });
-} catch (ex) {
-  console.error(ex.toString());
-  process.exit(1);
-}
+(async () => {
+  try {
+    await jScrambler
+      .protectAndDownload({
+        keys: {
+          accessKey,
+          secretKey
+        },
+        host,
+        port,
+        applicationId,
+        filesSrc,
+        filesDest,
+        params
+      });
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+})();
