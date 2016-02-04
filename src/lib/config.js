@@ -5,8 +5,7 @@ import rc from 'rc';
 const config = rc('jscrambler', {
   keys: {},
   host: 'api.jscrambler.com',
-  port: 443,
-  apiVersion: 3
+  port: 443
 }, []);
 
 export default config;
