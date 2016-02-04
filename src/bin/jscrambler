@@ -4,11 +4,11 @@ import commander from 'commander';
 import glob from 'glob';
 import path from 'path';
 
-import jScrambler from '../src';
-import {mergeAndParseParams} from '../src/cli';
+import jScrambler from '../lib';
+import {mergeAndParseParams} from '../lib/cli';
 
 commander
-  .version(require('../package.json').version)
+  .version(require('../../package.json').version)
   .usage('[source files] [options]')
   .option('-c, --config [config]', 'JScrambler configuration options')
   .option('-o, --output [output]', 'Output directory. If not specified the output is printed.')
@@ -16,7 +16,7 @@ commander
   .option('-s, --secret-key <secretKey>', 'Secret key')
   .option('-h, --host [host]', 'Hostname')
   .option('-p, --port [port]', 'Port')
-  .option('-a, --applicationId [applicationId]', 'Application ID')
+  .option('-i, --applicationId [applicationId]', 'Application ID')
   .option('--asserts-elimination [assertsElimination]', 'Remove function definitions and function calls with a given name.')
   .option('--browser-os-lock [browserOsLock]', 'Locks a JavaScript application to run only on a specific Browser or Operating System.')
   .option('--constant-folding', 'Simplifies constant expressions at compile-time to make your code faster at run-time.')
