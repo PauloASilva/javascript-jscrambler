@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import 'babel-polyfill';
+
 import commander from 'commander';
 import glob from 'glob';
 import path from 'path';
@@ -73,25 +75,22 @@ if (commander.args.length > 0) {
   globSrc = commander.args;
 }
 
-if (!globSrc) {
-  commander.outputHelp();
-  process.exit(1);
+if (globSrc && globSrc.length) {
+  var filesSrc = [];
+  // Iterate `globSrc` to build a list of source files into `filesSrc`
+  for (let i = 0, l = globSrc.length; i < l; ++i) {
+    // Calling sync `glob` because async is pointless for the CLI use case
+    // (as of now at least)
+    filesSrc = filesSrc.concat(glob.sync(globSrc[i], {dot: true}));
+  }
 }
-
-var filesSrc = [];
-// Iterate `globSrc` to build a list of source files into `filesSrc`
-for (let i = 0, l = globSrc.length; i < l; ++i) {
-  // Calling sync `glob` because async is pointless for the CLI use case
-  // (as of now at least)
-  filesSrc = filesSrc.concat(glob.sync(globSrc[i], {dot: true}));
-}
-
 // If there's no output directory and we're handling more than one file we can't
 // output to CLI so it's pointless to execute the command.
-if (!commander.output && filesSrc.length > 1) {
+if (!commander.output && (!filesSrc || filesSrc.length > 1)) {
   console.error('Destination must be specified unless only one file is used as input');
   process.exit(1);
 }
+
 
 if (!commander.applicationId) {
   console.error('Application ID is required but was not provided');

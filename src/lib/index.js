@@ -74,7 +74,7 @@ export default {
       throw new Error('Required *filesDest* not provided');
     }
 
-    if (filesSrc) {
+    if (filesSrc && filesSrc.length) {
       let _filesSrc = [];
       for (let i = 0, l = filesSrc.length; i < l; ++i) {
         if (typeof filesSrc[i] === 'string') {
