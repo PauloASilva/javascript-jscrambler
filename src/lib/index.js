@@ -1,3 +1,5 @@
+import 'babel-polyfill';
+
 import glob from 'glob';
 import path from 'path';
 import request from 'superagent';
