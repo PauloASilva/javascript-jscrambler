@@ -40,6 +40,47 @@ export default {
   Client: JScramblerClient,
   config,
   generateSignedParams,
+  // This method is a shortcut method that accepts an object with everything needed
+  // for the entire process of requesting an application protection and downloading
+  // that same protection when the same ends.
+  //
+  // `configPathOrObject` can be a path to a JSON or directly an object containing
+  // the following structure:
+  //
+  // ```json
+  // {
+  //   "keys": {
+  //     "accessKey": "",
+  //     "secretKey": ""
+  //   },
+  //   "applicationId": "",
+  //   "filesDest": ""
+  // }
+  // ```
+  //
+  // Also the following optional parameters are accepted:
+  //
+  // ```json
+  // {
+  //   "filesSrc": [""],
+  //   "params": {},
+  //   "cwd": "",
+  //   "host": "api.jscrambler.com",
+  //   "port": "443"
+  // }
+  // ```
+  //
+  // `filesSrc` supports glob patterns, and if it's provided it will replace the
+  // entire application sources.
+  //
+  // `params` if provided will replace all the application transformation parameters.
+  //
+  // `cwd` allows you to set the current working directory to resolve problems with
+  // relative paths with your `filesSrc` is outside the current working directory.
+  //
+  // Finally, `host` and `port` can be overridden if you to engage with a different
+  // endpoint than the default one, useful if you're running an enterprise version of
+  // Jscrambler or if you're provided access to beta features of our product.
   //
   async protectAndDownload (configPathOrObject, destCallback) {
     const config = typeof configPathOrObject === 'string' ?
