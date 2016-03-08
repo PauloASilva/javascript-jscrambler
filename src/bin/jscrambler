@@ -3,9 +3,11 @@
 import 'babel-polyfill';
 
 import commander from 'commander';
+import defaults from 'lodash.defaults';
 import glob from 'glob';
 import path from 'path';
 
+import _config from '../lib/config';
 import jScrambler from '../lib';
 import {mergeAndParseParams} from '../lib/cli';
 
@@ -28,18 +30,23 @@ if (commander.config) {
   // We're using `commander` (CLI) as the source of all truths, falling back to
   // the `config` provided by the file passed as argument
   config = require(path.resolve(commander.config, '.'));
-  commander.output = commander.output || config.filesDest;
-  // No need to validate if `keys` are set, later `client` will do so, but first
-  // will try to load to the configuration through an `rc` file
-  if (config.keys) {
-    commander.accessKey = commander.accessKey || config.keys.accessKey;
-    commander.secretKey = commander.secretKey || config.keys.secretKey;
-  }
-  commander.host = commander.host || config.host;
-  commander.port = commander.port || config.port;
-  commander.applicationId = commander.applicationId || config.applicationId;
-  globSrc = config.filesSrc;
+} else {
+  config = {};
 }
+
+config.output = commander.output || config.filesDest;
+// No need to validate if `keys` are set, later `client` will do so, but first
+// will try to load to the configuration through an `rc` file
+if (config.keys) {
+  config.accessKey = commander.accessKey || config.keys.accessKey;
+  config.secretKey = commander.secretKey || config.keys.secretKey;
+}
+config.host = commander.host || config.host;
+config.port = commander.port || config.port;
+config.applicationId = commander.applicationId || config.applicationId;
+globSrc = config.filesSrc;
+
+config = defaults(config, _config);
 
 // If src paths have been provided
 if (commander.args.length > 0) {
@@ -57,18 +64,6 @@ if (globSrc && globSrc.length) {
     }));
   }
 }
-// If there's no output directory and we're handling more than one file we can't
-// output to CLI so it's pointless to execute the command.
-if (!commander.output && (!filesSrc || filesSrc.length > 1)) {
-  console.error('Destination must be specified unless only one file is used as input');
-  process.exit(1);
-}
-
-
-if (!commander.applicationId) {
-  console.error('Application ID is required but was not provided');
-  process.exit(1);
-}
 
 const {
   applicationId,
@@ -77,9 +72,9 @@ const {
   secretKey,
   host,
   port
-} = commander;
+} = config;
 
-const params = mergeAndParseParams(commander, config && config.params);
+const params = mergeAndParseParams(commander, config.params);
 
 // Go, go, go
 (async () => {
