@@ -2,7 +2,7 @@ import 'babel-polyfill';
 
 import glob from 'glob';
 import path from 'path';
-import request from 'superagent';
+import request from 'axios';
 import Q from 'q';
 
 import config from './config';
@@ -318,7 +318,7 @@ export default {
   //
   async downloadApplicationProtection (client, protectionId) {
     const deferred = Q.defer();
-    client.get(`/application/download/${protectionId}`, null, responseHandler(deferred, false), false);
+    client.get(`/application/download/${protectionId}`, null, responseHandler(deferred), false);
     return deferred.promise.then(errorHandler);
   }
 };
@@ -341,15 +341,15 @@ function getFileFromUrl (client, url) {
   return deferred.promise;
 }
 
-function responseHandler (deferred, parseJSON = true) {
+function responseHandler (deferred) {
   return (err, res) => {
     var body = res.data;
     try {
       if (err) deferred.reject(err);
       else if (res.status >= 400) {
-        deferred.reject(Buffer.isBuffer(body) && parseJSON ? JSON.parse(body.toString()) : body);
+        deferred.reject(body);
       } else {
-        deferred.resolve(Buffer.isBuffer(body) && parseJSON ? JSON.parse(body.toString()) : body);
+        deferred.resolve(body);
       }
     } catch (ex) {
       deferred.reject(body);

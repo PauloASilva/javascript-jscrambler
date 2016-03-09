@@ -95,9 +95,12 @@ JScramblerClient.prototype.request = function (method, path, params = {}, callba
     options = signedData;
   } else {
     options = {
-      responseType: 'arraybuffer',
       params: signedData
     };
+  }
+
+  if (!isJSON) {
+    options.responseType = 'arraybuffer';
   }
 
   request[method.toLowerCase()](formatedUrl, options, settings)
