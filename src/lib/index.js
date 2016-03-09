@@ -347,9 +347,9 @@ function responseHandler (deferred, parseJSON = true) {
     try {
       if (err) deferred.reject(err);
       else if (res.status >= 400) {
-        deferred.reject(Buffer.isBuffer(body) && parseJSON ? JSON.parse(body) : body);
+        deferred.reject(Buffer.isBuffer(body) && parseJSON ? JSON.parse(body.toString()) : body);
       } else {
-        deferred.resolve(Buffer.isBuffer(body) && parseJSON ? JSON.parse(body) : body);
+        deferred.resolve(Buffer.isBuffer(body) && parseJSON ? JSON.parse(body.toString()) : body);
       }
     } catch (ex) {
       deferred.reject(body);
