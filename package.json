@@ -30,6 +30,7 @@
     "node": ">= 0.8.0"
   },
   "dependencies": {
+    "axios": "^0.9.1",
     "commander": "^2.8.1",
     "flavored-path": "0.0.8",
     "fs-extra": "^0.26.5",
@@ -38,7 +39,7 @@
     "jszip": "^2.5.0",
     "lodash.assign": "^4.0.1",
     "lodash.clone": "^4.0.3",
-    "lodash.defaults": "^4.0.0",
+    "lodash.defaults": "^4.0.1",
     "lodash.keys": "^4.0.1",
     "lodash.omit": "^3.1.0",
     "lodash.pluck": "^3.1.2",
@@ -46,8 +47,8 @@
     "q": "^1.4.1",
     "rc": "^1.1.0",
     "snake-case": "^1.1.1",
-    "superagent": "^1.4.0",
-    "temp": "^0.8.3"
+    "temp": "^0.8.3",
+    "yauzl": "^2.4.1"
   },
   "devDependencies": {
     "babel": "^5.8.35",

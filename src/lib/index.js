@@ -151,12 +151,14 @@ export default {
         parameters: JSON.stringify(params)
       });
       if (updateApplicationRes.errors) {
+        console.error(updateApplicationRes.errors);
         throw new Error('Error updating the application');
       }
     }
 
     const createApplicationProtectionRes = await this.createApplicationProtection(client, applicationId);
     if (createApplicationProtectionRes.errors) {
+      console.error(createApplicationProtectionRes.errors);
       throw new Error('Error creating application protection');
     }
 
@@ -164,8 +166,7 @@ export default {
     await this.pollProtection(client, applicationId, protectionId);
 
     const download = await this.downloadApplicationProtection(client, protectionId);
-    console.log(download);
-    await unzip(download, filesDest || destCallback);
+    unzip(download, filesDest || destCallback);
   },
   //
   async pollProtection (client, applicationId, protectionId) {
@@ -342,26 +343,13 @@ function getFileFromUrl (client, url) {
 
 function responseHandler (deferred, parseJSON = true) {
   return (err, res) => {
-    var body;
-    if (Buffer.isBuffer(res.body) || Object.keys(res.body).length) {
-      body = res.body;
-    } else {
-      body = res.text;
-    }
+    var body = res.data;
     try {
       if (err) deferred.reject(err);
-      else if (res.statusCode >= 400) {
-        if (Buffer.isBuffer(body)) {
-          deferred.reject(JSON.parse(body));
-        } else {
-          deferred.reject(body);
-        }
+      else if (res.status >= 400) {
+        deferred.reject(Buffer.isBuffer(body) && parseJSON ? JSON.parse(body) : body);
       } else {
-        if (Buffer.isBuffer(body)) {
-          deferred.resolve(parseJSON ? JSON.parse(body) : body);
-        } else {
-          deferred.resolve(body);
-        }
+        deferred.resolve(Buffer.isBuffer(body) && parseJSON ? JSON.parse(body) : body);
       }
     } catch (ex) {
       deferred.reject(body);

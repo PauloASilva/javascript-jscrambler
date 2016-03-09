@@ -2,6 +2,7 @@
 
 import size from 'lodash.size';
 import temp from 'temp';
+import yauzl from 'yauzl';
 import JSZip from 'jszip';
 import {readFileSync, statSync, outputFileSync} from 'fs-extra';
 import {normalize, resolve, relative, join} from 'path';
@@ -100,7 +101,6 @@ export function unzip (zipFile, dest) {
         } else {
           destPath = join(dest, file);
         }
-
         outputFileSync(destPath, buffer);
       }
     }

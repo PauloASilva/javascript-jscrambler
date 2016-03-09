@@ -2,7 +2,7 @@ import clone from 'lodash.clone';
 import crypto from 'crypto';
 import defaults from 'lodash.defaults';
 import keys from 'lodash.keys';
-import request from 'superagent';
+import request from 'axios';
 import url from 'url';
 
 import cfg from './config';
@@ -90,21 +90,19 @@ JScramblerClient.prototype.request = function (method, path, params = {}, callba
     protocol: protocol
   }) + path;
 
-  const req = request[method.toLowerCase()](formatedUrl);
-
-  if (isJSON) {
-    req.type('json');
-  } else {
-    req.buffer(true);
-  }
-
+  var options, settings = {responseType: 'arraybuffer'};
   if (method === 'POST' || method === 'PUT') {
-    req.send(signedData);
+    options = signedData;
   } else {
-    req.query(signedData);
+    options = {
+      responseType: 'arraybuffer',
+      params: signedData
+    };
   }
 
-  req.end(callback);
+  request[method.toLowerCase()](formatedUrl, options, settings)
+    .then((res) => callback(null, res))
+    .catch((error) => callback(error));
 };
 /**
  * Post request.
