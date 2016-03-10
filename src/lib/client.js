@@ -42,7 +42,7 @@ function JScramblerClient (options) {
  * @param {Callback} callback
  */
 JScramblerClient.prototype.delete = function (path, params, callback) {
-  this.request('DELETE', path, params, callback);
+  return this.request('DELETE', path, params, callback);
 };
 /**
  * Get request.
@@ -51,7 +51,7 @@ JScramblerClient.prototype.delete = function (path, params, callback) {
  * @param {Callback} callback
  */
 JScramblerClient.prototype.get = function (path, params, callback, isJSON = true) {
-  this.request('GET', path, params, callback, isJSON);
+  return this.request('GET', path, params, callback, isJSON);
 };
 /**
  * HTTP request.
@@ -90,20 +90,23 @@ JScramblerClient.prototype.request = function (method, path, params = {}, callba
     protocol: protocol
   }) + path;
 
-  var options, settings = {responseType: 'arraybuffer'};
-  if (method === 'POST' || method === 'PUT') {
-    options = signedData;
-  } else {
-    options = {
-      params: signedData
-    };
-  }
+  var data, settings = {};
 
   if (!isJSON) {
-    options.responseType = 'arraybuffer';
+    settings.responseType = 'arraybuffer';
   }
 
-  request[method.toLowerCase()](formatedUrl, options, settings)
+  var promise;
+
+  if (method === 'GET' || method === 'DELETE') {
+    settings.params = signedData;
+    promise = request[method.toLowerCase()](formatedUrl, settings);
+  } else {
+    data = signedData;
+    promise = request[method.toLowerCase()](formatedUrl, data, settings);
+  }
+
+  return promise
     .then((res) => callback(null, res))
     .catch((error) => callback(error));
 };
@@ -114,7 +117,7 @@ JScramblerClient.prototype.request = function (method, path, params = {}, callba
  * @param {Callback} callback
  */
 JScramblerClient.prototype.post = function (path, params, callback) {
-  this.request('POST', path, params, callback);
+  return this.request('POST', path, params, callback);
 };
 
 exports = module.exports = JScramblerClient;

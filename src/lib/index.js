@@ -327,7 +327,7 @@ function getFileFromUrl (client, url) {
   const deferred = Q.defer();
   request.get(url).end(function (err, res) {
     var file;
-    if(err) {
+    if (err) {
       deferred.reject(err);
     } else {
       file = {
@@ -343,16 +343,19 @@ function getFileFromUrl (client, url) {
 
 function responseHandler (deferred) {
   return (err, res) => {
-    var body = res.data;
-    try {
-      if (err) deferred.reject(err);
-      else if (res.status >= 400) {
+    if (err) {
+      deferred.reject(err);
+    } else {
+      var body = res.data;
+      try {
+        if (res.status >= 400) {
+          deferred.reject(body);
+        } else {
+          deferred.resolve(body);
+        }
+      } catch (ex) {
         deferred.reject(body);
-      } else {
-        deferred.resolve(body);
       }
-    } catch (ex) {
-      deferred.reject(body);
     }
   };
 }
