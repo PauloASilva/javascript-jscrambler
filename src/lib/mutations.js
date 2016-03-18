@@ -99,6 +99,27 @@ export function updateApplication (application, fragments = updateApplicationDef
   };
 }
 
+const unlockApplicationDefaultFragments = `
+  _id,
+  createdAt,
+  name
+`;
+
+export function unlockApplication (application, fragments = unlockApplicationDefaultFragments) {
+  return {
+    query: `
+      mutation unlockApplication ($applicationId: String!) {
+        unlockApplication (_id: $applicationId) {
+          ${fragments}
+        }
+      }
+    `,
+    params: {
+      applicationId: application._id
+    }
+  };
+}
+
 const addApplicationSourceDefaultFragments = `
   _id,
   filename,

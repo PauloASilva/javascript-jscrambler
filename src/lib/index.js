@@ -20,7 +20,8 @@ import {
   updateTemplate,
   createApplicationProtection,
   removeProtection,
-  duplicateApplication
+  duplicateApplication,
+  unlockApplication
 } from './mutations';
 import {
   getApplication,
@@ -221,6 +222,12 @@ export default {
   async updateApplication (client, application, fragments) {
     const deferred = Q.defer();
     client.post('/application', updateApplication(application, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  //
+  async unlockApplication (client, application, fragments) {
+    const deferred = Q.defer();
+    client.post('/application', unlockApplication(application, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   //
