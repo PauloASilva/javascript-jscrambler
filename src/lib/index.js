@@ -146,9 +146,11 @@ export default {
     }
 
     if (params && Object.keys(params).length) {
+      const areParametersOrdered = Array.isArray(params);
       const updateApplicationRes = await this.updateApplication(client, {
         _id: applicationId,
-        parameters: JSON.stringify(params)
+        parameters: JSON.stringify(normalizeParameters(params)),
+        areParametersOrdered
       });
       if (updateApplicationRes.errors) {
         console.error(updateApplicationRes.errors);
@@ -368,4 +370,22 @@ function errorHandler (res) {
   }
 
   return res;
+}
+
+function normalizeParameters (parameters) {
+  var result;
+
+  if (!Array.isArray(parameters)) {
+    result = [];
+    Object.keys(parameters).forEach((name) => {
+      result.push({
+        name,
+        options: parameters[name]
+      })
+    });
+  } else {
+    result = parameters;
+  }
+
+  return result;
 }
