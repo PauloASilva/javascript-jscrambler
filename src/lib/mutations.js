@@ -129,7 +129,7 @@ const addApplicationSourceDefaultFragments = `
 export function addApplicationSource (applicationId, data, fragments = addApplicationSourceDefaultFragments) {
   return {
     query: `
-      mutation addSourceToApplication ($applicationId: String!, $data: ApplicationSourceInput!) {
+      mutation addSourceToApplication ($applicationId: String!, $data: ApplicationSourceCreate!) {
         addSourceToApplication(applicationId: $applicationId, data: $data) {
           ${fragments}
         }
@@ -151,7 +151,7 @@ const updateApplicationSourceDefaultFragments = `
 export function updateApplicationSource (applicationSource, fragments = updateApplicationSourceDefaultFragments) {
   return {
     query: `
-      mutation updateApplicationSource ($sourceId: String!, $data: ApplicationSourceInput!) {
+      mutation updateApplicationSource ($sourceId: String!, $data: ApplicationSourceUpdate!) {
         updateApplicationSource(_id: $sourceId, data: $data) {
           ${fragments}
         }
