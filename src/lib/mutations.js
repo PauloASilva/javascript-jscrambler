@@ -7,7 +7,7 @@ const createApplicationDefaultFragments = `
 export function createApplication (data, fragments = createApplicationDefaultFragments) {
   return {
     query: `
-      mutation createApplication ($data: ApplicationInput!) {
+      mutation createApplication ($data: ApplicationCreate!) {
         createApplication(data: $data) {
           ${fragments}
         }
@@ -23,7 +23,7 @@ const duplicateApplicationDefaultFragments = `
   _id
 `;
 
-export function duplicateApplication (id, fragments = removeApplicationDefaultFragments) {
+export function duplicateApplication (id, fragments = duplicateApplicationDefaultFragments) {
   return {
     query: `
       mutation duplicateApplication ($_id: String!) {
@@ -86,7 +86,7 @@ const updateApplicationDefaultFragments = `
 export function updateApplication (application, fragments = updateApplicationDefaultFragments) {
   return {
     query: `
-      mutation updateApplication ($applicationId: String!, $data: ApplicationInput!) {
+      mutation updateApplication ($applicationId: String!, $data: ApplicationUpdate!) {
         updateApplication (_id: $applicationId, data: $data) {
           ${fragments}
         }
@@ -246,7 +246,7 @@ export function updateTemplate (template, fragments = updateTemplateDefaultFragm
       templateId: template._id,
       data: template
     }
-  }
+  };
 }
 
 const createProtectionDefaultFragments = `
@@ -266,5 +266,5 @@ export function createApplicationProtection (applicationId, fragments = createPr
     params: {
       applicationId: applicationId
     }
-  }
+  };
 }
