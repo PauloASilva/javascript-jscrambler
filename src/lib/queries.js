@@ -55,8 +55,8 @@ const getApplicationProtectionsDefaultFragments = `
 export function getApplicationProtections (applicationId, params, fragments = getApplicationProtectionsDefaultFragments) {
   return {
     query: `
-      query getApplicationProtections ($applicationId: String!, $sort: String, $order: String, $limit: Int, $page: Int, $search: String, $s: String) {
-        applicationProtections(_id: $applicationId, sort: $sort, order: $order, limit: $limit, page: $page, search: $search, s: $s) {
+      query getApplicationProtections ($applicationId: String!, $sort: String, $order: String, $limit: Int, $page: Int) {
+        applicationProtections(_id: $applicationId, sort: $sort, order: $order, limit: $limit, page: $page) {
           ${fragments}
         }
       }
