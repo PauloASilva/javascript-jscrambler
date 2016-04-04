@@ -84,6 +84,9 @@ const updateApplicationDefaultFragments = `
 `;
 
 export function updateApplication (application, fragments = updateApplicationDefaultFragments) {
+  const applicationId = application._id;
+  delete application._id;
+
   return {
     query: `
       mutation updateApplication ($applicationId: String!, $data: ApplicationUpdate!) {
@@ -93,7 +96,7 @@ export function updateApplication (application, fragments = updateApplicationDef
       }
     `,
     params: {
-      applicationId: application._id,
+      applicationId,
       data: application
     }
   };
@@ -149,6 +152,9 @@ const updateApplicationSourceDefaultFragments = `
 `;
 
 export function updateApplicationSource (applicationSource, fragments = updateApplicationSourceDefaultFragments) {
+  const sourceId = applicationSource._id;
+  delete applicationSource._id;
+
   return {
     query: `
       mutation updateApplicationSource ($sourceId: String!, $data: ApplicationSourceUpdate!) {
@@ -158,7 +164,7 @@ export function updateApplicationSource (applicationSource, fragments = updateAp
       }
     `,
     params: {
-      sourceId: applicationSource._id,
+      sourceId: sourceId,
       data: applicationSource
     }
   };
@@ -234,6 +240,9 @@ const updateTemplateDefaultFragments = `
 `;
 
 export function updateTemplate (template, fragments = updateTemplateDefaultFragments) {
+  const templateId = template._id;
+  delete template._id;
+
   return {
     query: `
       mutation updateTemplate ($templateId: ID!, $data: TemplateInput!) {
@@ -243,7 +252,7 @@ export function updateTemplate (template, fragments = updateTemplateDefaultFragm
       }
     `,
     params: {
-      templateId: template._id,
+      templateId,
       data: template
     }
   };
