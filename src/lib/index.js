@@ -334,19 +334,19 @@ export default {
 
 function getFileFromUrl (client, url) {
   const deferred = Q.defer();
-  request.get(url).end(function (err, res) {
-    var file;
-    if (err) {
-      deferred.reject(err);
-    } else {
+  var file;
+  request.get(url)
+    .then((res) => {
       file = {
-        content: res.text,
+        content: res.data,
         filename: path.basename(url),
         extension: path.extname(url).substr(1)
       };
       deferred.resolve(file);
-    }
-  });
+    })
+    .catch((err) => {
+      deferred.reject(err);
+    });
   return deferred.promise;
 }
 
