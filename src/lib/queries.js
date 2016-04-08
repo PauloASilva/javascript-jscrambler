@@ -30,17 +30,18 @@ const getApplicationSourceDefaultFragments = `
   extension
 `;
 
-export function getApplicationSource (sourceId, fragments = getApplicationSourceDefaultFragments) {
+export function getApplicationSource (sourceId, fragments = getApplicationSourceDefaultFragments, limits) {
   return {
     query: `
-      query getApplicationSource ($sourceId: String!) {
-        applicationSource(_id: $sourceId) {
+      query getApplicationSource ($sourceId: String!, $contentLimit: Int, $transformedLimit: Int) {
+        applicationSource(_id: $sourceId, contentLimit: $contentLimit, transformedLimit: $transformedLimit) {
           ${fragments}
         }
       }
     `,
     params: JSON.stringify({
-      sourceId
+      sourceId,
+      ...limits
     })
   };
 }
