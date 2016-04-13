@@ -1,0 +1,76 @@
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports.mergeAndParseParams = mergeAndParseParams;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _lodashClone = require('lodash.clone');
+
+var _lodashClone2 = _interopRequireDefault(_lodashClone);
+
+var _snakeCase = require('snake-case');
+
+var _snakeCase2 = _interopRequireDefault(_snakeCase);
+
+// Override params file changes with any specified command line options
+// TODO Populate this list based on an external JSON
+// FIXME This list is deprecated
+var isBoolFlag = {
+  assertsElimination: false,
+  browserOsLock: false,
+  constantFolding: true,
+  deadCode: true,
+  deadCodeElimination: true,
+  debuggingCodeElimination: false,
+  dictionaryCompression: true,
+  domainLock: false,
+  domainLockWarningFunction: false,
+  dotNotationElimination: true,
+  exceptionsList: false,
+  expirationDate: false,
+  expirationDateWarningFunction: false,
+  functionOutlining: true,
+  functionReorder: true,
+  ignoreFiles: false,
+  literalHooking: false,
+  literalDuplicates: true,
+  memberEnumeration: true,
+  mode: false,
+  namePrefix: false,
+  renameAll: false,
+  renameInclude: false,
+  renameLocal: true,
+  selfDefending: false,
+  stringSplitting: false,
+  whitespace: true,
+  preserveAnnotations: true
+};
+
+// Convert from command line option format to snake case for the JScrambler API.
+// It also replaces truthy boolean flags with %DEFAULT% values
+
+function mergeAndParseParams(commander, params) {
+  params = (0, _lodashClone2['default'])(params || {});
+
+  for (var _name in isBoolFlag) {
+    if (commander[_name] !== undefined) {
+      var snakeCaseName = (0, _snakeCase2['default'])(_name);
+      if (isBoolFlag[_name] === true) {
+        params[snakeCaseName] = {
+          status: 1
+        };
+      } else {
+        params[snakeCaseName] = commander[_name];
+      }
+      if (typeof params[snakeCaseName].status === 'undefined') {
+        params[snakeCaseName].status = 1;
+      }
+    }
+  }
+
+  return params;
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9saWIvY2xpLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OzsyQkFBa0IsY0FBYzs7Ozt5QkFDVixZQUFZOzs7Ozs7O0FBS2xDLElBQU0sVUFBVSxHQUFHO0FBQ2pCLG9CQUFrQixFQUFFLEtBQUs7QUFDekIsZUFBYSxFQUFFLEtBQUs7QUFDcEIsaUJBQWUsRUFBRSxJQUFJO0FBQ3JCLFVBQVEsRUFBRSxJQUFJO0FBQ2QscUJBQW1CLEVBQUUsSUFBSTtBQUN6QiwwQkFBd0IsRUFBRSxLQUFLO0FBQy9CLHVCQUFxQixFQUFFLElBQUk7QUFDM0IsWUFBVSxFQUFFLEtBQUs7QUFDakIsMkJBQXlCLEVBQUUsS0FBSztBQUNoQyx3QkFBc0IsRUFBRSxJQUFJO0FBQzVCLGdCQUFjLEVBQUUsS0FBSztBQUNyQixnQkFBYyxFQUFFLEtBQUs7QUFDckIsK0JBQTZCLEVBQUUsS0FBSztBQUNwQyxtQkFBaUIsRUFBRSxJQUFJO0FBQ3ZCLGlCQUFlLEVBQUUsSUFBSTtBQUNyQixhQUFXLEVBQUUsS0FBSztBQUNsQixnQkFBYyxFQUFFLEtBQUs7QUFDckIsbUJBQWlCLEVBQUUsSUFBSTtBQUN2QixtQkFBaUIsRUFBRSxJQUFJO0FBQ3ZCLE1BQUksRUFBRSxLQUFLO0FBQ1gsWUFBVSxFQUFFLEtBQUs7QUFDakIsV0FBUyxFQUFFLEtBQUs7QUFDaEIsZUFBYSxFQUFFLEtBQUs7QUFDcEIsYUFBVyxFQUFFLElBQUk7QUFDakIsZUFBYSxFQUFFLEtBQUs7QUFDcEIsaUJBQWUsRUFBRSxLQUFLO0FBQ3RCLFlBQVUsRUFBRSxJQUFJO0FBQ2hCLHFCQUFtQixFQUFFLElBQUk7Q0FDMUIsQ0FBQzs7Ozs7QUFJSyxTQUFTLG1CQUFtQixDQUFFLFNBQVMsRUFBRSxNQUFNLEVBQUU7QUFDdEQsUUFBTSxHQUFHLDhCQUFNLE1BQU0sSUFBSSxFQUFFLENBQUMsQ0FBQzs7QUFFN0IsT0FBSyxJQUFJLEtBQUksSUFBSSxVQUFVLEVBQUU7QUFDM0IsUUFBSSxTQUFTLENBQUMsS0FBSSxDQUFDLEtBQUssU0FBUyxFQUFFO0FBQ2pDLFVBQUksYUFBYSxHQUFHLDRCQUFVLEtBQUksQ0FBQyxDQUFDO0FBQ3BDLFVBQUksVUFBVSxDQUFDLEtBQUksQ0FBQyxLQUFLLElBQUksRUFBRTtBQUM3QixjQUFNLENBQUMsYUFBYSxDQUFDLEdBQUc7QUFDdEIsZ0JBQU0sRUFBRSxDQUFDO1NBQ1YsQ0FBQztPQUNILE1BQU07QUFDTCxjQUFNLENBQUMsYUFBYSxDQUFDLEdBQUcsU0FBUyxDQUFDLEtBQUksQ0FBQyxDQUFDO09BQ3pDO0FBQ0QsVUFBSSxPQUFPLE1BQU0sQ0FBQyxhQUFhLENBQUMsQ0FBQyxNQUFNLEtBQUssV0FBVyxFQUFFO0FBQ3ZELGNBQU0sQ0FBQyxhQUFhLENBQUMsQ0FBQyxNQUFNLEdBQUcsQ0FBQyxDQUFDO09BQ2xDO0tBQ0Y7R0FDRjs7QUFFRCxTQUFPLE1BQU0sQ0FBQztDQUNmIiwiZmlsZSI6ImNsaS5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBjbG9uZSBmcm9tICdsb2Rhc2guY2xvbmUnO1xuaW1wb3J0IHNuYWtlQ2FzZSBmcm9tICdzbmFrZS1jYXNlJztcblxuLy8gT3ZlcnJpZGUgcGFyYW1zIGZpbGUgY2hhbmdlcyB3aXRoIGFueSBzcGVjaWZpZWQgY29tbWFuZCBsaW5lIG9wdGlvbnNcbi8vIFRPRE8gUG9wdWxhdGUgdGhpcyBsaXN0IGJhc2VkIG9uIGFuIGV4dGVybmFsIEpTT05cbi8vIEZJWE1FIFRoaXMgbGlzdCBpcyBkZXByZWNhdGVkXG5jb25zdCBpc0Jvb2xGbGFnID0ge1xuICBhc3NlcnRzRWxpbWluYXRpb246IGZhbHNlLFxuICBicm93c2VyT3NMb2NrOiBmYWxzZSxcbiAgY29uc3RhbnRGb2xkaW5nOiB0cnVlLFxuICBkZWFkQ29kZTogdHJ1ZSxcbiAgZGVhZENvZGVFbGltaW5hdGlvbjogdHJ1ZSxcbiAgZGVidWdnaW5nQ29kZUVsaW1pbmF0aW9uOiBmYWxzZSxcbiAgZGljdGlvbmFyeUNvbXByZXNzaW9uOiB0cnVlLFxuICBkb21haW5Mb2NrOiBmYWxzZSxcbiAgZG9tYWluTG9ja1dhcm5pbmdGdW5jdGlvbjogZmFsc2UsXG4gIGRvdE5vdGF0aW9uRWxpbWluYXRpb246IHRydWUsXG4gIGV4Y2VwdGlvbnNMaXN0OiBmYWxzZSxcbiAgZXhwaXJhdGlvbkRhdGU6IGZhbHNlLFxuICBleHBpcmF0aW9uRGF0ZVdhcm5pbmdGdW5jdGlvbjogZmFsc2UsXG4gIGZ1bmN0aW9uT3V0bGluaW5nOiB0cnVlLFxuICBmdW5jdGlvblJlb3JkZXI6IHRydWUsXG4gIGlnbm9yZUZpbGVzOiBmYWxzZSxcbiAgbGl0ZXJhbEhvb2tpbmc6IGZhbHNlLFxuICBsaXRlcmFsRHVwbGljYXRlczogdHJ1ZSxcbiAgbWVtYmVyRW51bWVyYXRpb246IHRydWUsXG4gIG1vZGU6IGZhbHNlLFxuICBuYW1lUHJlZml4OiBmYWxzZSxcbiAgcmVuYW1lQWxsOiBmYWxzZSxcbiAgcmVuYW1lSW5jbHVkZTogZmFsc2UsXG4gIHJlbmFtZUxvY2FsOiB0cnVlLFxuICBzZWxmRGVmZW5kaW5nOiBmYWxzZSxcbiAgc3RyaW5nU3BsaXR0aW5nOiBmYWxzZSxcbiAgd2hpdGVzcGFjZTogdHJ1ZSxcbiAgcHJlc2VydmVBbm5vdGF0aW9uczogdHJ1ZVxufTtcblxuLy8gQ29udmVydCBmcm9tIGNvbW1hbmQgbGluZSBvcHRpb24gZm9ybWF0IHRvIHNuYWtlIGNhc2UgZm9yIHRoZSBKU2NyYW1ibGVyIEFQSS5cbi8vIEl0IGFsc28gcmVwbGFjZXMgdHJ1dGh5IGJvb2xlYW4gZmxhZ3Mgd2l0aCAlREVGQVVMVCUgdmFsdWVzXG5leHBvcnQgZnVuY3Rpb24gbWVyZ2VBbmRQYXJzZVBhcmFtcyAoY29tbWFuZGVyLCBwYXJhbXMpIHtcbiAgcGFyYW1zID0gY2xvbmUocGFyYW1zIHx8IHt9KTtcblxuICBmb3IgKGxldCBuYW1lIGluIGlzQm9vbEZsYWcpIHtcbiAgICBpZiAoY29tbWFuZGVyW25hbWVdICE9PSB1bmRlZmluZWQpIHtcbiAgICAgIGxldCBzbmFrZUNhc2VOYW1lID0gc25ha2VDYXNlKG5hbWUpO1xuICAgICAgaWYgKGlzQm9vbEZsYWdbbmFtZV0gPT09IHRydWUpIHtcbiAgICAgICAgcGFyYW1zW3NuYWtlQ2FzZU5hbWVdID0ge1xuICAgICAgICAgIHN0YXR1czogMVxuICAgICAgICB9O1xuICAgICAgfSBlbHNlIHtcbiAgICAgICAgcGFyYW1zW3NuYWtlQ2FzZU5hbWVdID0gY29tbWFuZGVyW25hbWVdO1xuICAgICAgfVxuICAgICAgaWYgKHR5cGVvZiBwYXJhbXNbc25ha2VDYXNlTmFtZV0uc3RhdHVzID09PSAndW5kZWZpbmVkJykge1xuICAgICAgICBwYXJhbXNbc25ha2VDYXNlTmFtZV0uc3RhdHVzID0gMTtcbiAgICAgIH1cbiAgICB9XG4gIH1cblxuICByZXR1cm4gcGFyYW1zO1xufVxuIl19
