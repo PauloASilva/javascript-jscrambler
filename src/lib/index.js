@@ -237,9 +237,9 @@ export default {
     return deferred.promise.then(errorHandler);
   },
   //
-  async getApplicationSource (client, sourceId, fragments) {
+  async getApplicationSource (client, sourceId, fragments, limits) {
     const deferred = Q.defer();
-    client.get('/application', getApplicationSource(sourceId, fragments), responseHandler(deferred));
+    client.get('/application', getApplicationSource(sourceId, fragments, limits), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   //
