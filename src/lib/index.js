@@ -21,7 +21,8 @@ import {
   createApplicationProtection,
   removeProtection,
   duplicateApplication,
-  unlockApplication
+  unlockApplication,
+  applyTemplate
 } from './mutations';
 import {
   getApplication,
@@ -304,6 +305,12 @@ export default {
   async removeSourceFromApplication (client, sourceId, applicationId, fragments) {
     const deferred = Q.defer();
     client.post('/application', removeSourceFromApplication(sourceId, applicationId, fragments), responseHandler(deferred));
+    return deferred.promise.then(errorHandler);
+  },
+  //
+  async applyTemplate (client, templateId, appId, fragments) {
+    const deferred = Q.defer();
+    client.post('/application', applyTemplate(templateId, appId, fragments), responseHandler(deferred));
     return deferred.promise.then(errorHandler);
   },
   //

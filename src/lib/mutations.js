@@ -277,3 +277,24 @@ export function createApplicationProtection (applicationId, fragments = createPr
     }
   };
 }
+
+const applyTemplateDefaultFragments = `
+  _id,
+  parameters
+`;
+
+export function applyTemplate (templateId, appId, fragments = applyTemplateDefaultFragments) {
+  return {
+    query: `
+      mutation applyTemplate ($templateId: String!, $appId: String!) {
+        applyTemplate (templateId: $templateId, appId: $appId) {
+          ${fragments}
+        }
+      }
+    `,
+    params: {
+      templateId,
+      appId
+    }
+  };
+}
