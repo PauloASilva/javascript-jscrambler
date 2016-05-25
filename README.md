@@ -1,4 +1,4 @@
-# JScrambler Client for Node.js
+# JScrambler Client for Browser and Node.js
 
 - [RC configuration](#rc-configuration)
 - [CLI](#cli)
@@ -8,35 +8,8 @@
   - [Using minimatch](#using-minimatch)
   - [Using configuration file](#using-configuration-file)
 - [API](#api)
-  - [Upload/download example](#uploaddownload-example)
-- [JScrambler Options](#jscrambler-options)
-  - [asserts_elimination](#asserts_elimination)
-  - [browser_os_lock](#browser_os_lock)
-  - [constant_folding](#constant_folding)
-  - [dead_code](#dead_code)
-  - [dead_code_elimination](#dead_code_elimination)
-  - [debugging_code_elimination](#debugging_code_elimination)
-  - [dictionary_compression](#dictionary_compression)
-  - [domain_lock](#domain_lock)
-  - [domain_lock_warning_function](#domain_lock_warning_function)
-  - [dot_notation_elimination](#dot_notation_elimination)
-  - [exceptions_list](#exceptions_list)
-  - [expiration_date](#expiration_date)
-  - [expiration_date_warning_function](#expiration_date_warning_function)
-  - [function_outlining](#function_outlining)
-  - [function_reorder](#function_reorder)
-  - [ignore_files](#ignore_files)
-  - [literal_hooking](#literal_hooking)
-  - [duplicate_literals](#duplicate_literals)
-  - [member_enumeration](#member_enumeration)
-  - [mode](#mode)
-  - [name_prefix](#name_prefix)
-  - [rename_all](#rename_all)
-  - [rename_local](#rename_local)
-  - [self_defending](#self_defending)
-  - [string_splitting](#string_splitting)
-  - [whitespace](#whitespace)
-
+  - [Quick example](#quick-example)
+- [JScrambler Parameters](#jscrambler-parameters)
 ## RC configuration
 You may put your access and secret keys into a config file if found in [these directories](https://github.com/dominictarr/rc#standards). Besides simplifying the command entry, this has the added benefit of not logging your JScrambler credentials.
 
