@@ -13,17 +13,17 @@ import {mergeAndParseParams} from '../lib/cli';
 
 commander
   .version(require('../../package.json').version)
-  .usage('[source files] [options]')
-  .option('-c, --config [config]', 'JScrambler configuration options')
-  .option('-o, --output [output]', 'Output directory. If not specified the output is printed.')
+  .usage('[options] <file ...>')
   .option('-a, --access-key <accessKey>', 'Access key')
+  .option('-c, --config <config>', 'JScrambler configuration options')
+  .option('-h, --host <host>', 'Hostname')
+  .option('-i, --applicationId <id>', 'Application ID')
+  .option('-o, --output-dir <dir>', 'Output directory')
+  .option('-p, --port <port>', 'Port')
   .option('-s, --secret-key <secretKey>', 'Secret key')
-  .option('-h, --host [host]', 'Hostname')
-  .option('-p, --port [port]', 'Port')
-  .option('-i, --applicationId [applicationId]', 'Application ID')
   .parse(process.argv);
 
-var globSrc, config;
+var globSrc, filesSrc, config;
 
 // If -c, --config file was provided
 if (commander.config) {
@@ -34,27 +34,23 @@ if (commander.config) {
   config = {};
 }
 
-config.output = commander.output || config.filesDest;
-// No need to validate if `keys` are set, later `client` will do so, but first
-// will try to load to the configuration through an `rc` file
-if (config.keys) {
-  config.accessKey = commander.accessKey || config.keys.accessKey;
-  config.secretKey = commander.secretKey || config.keys.secretKey;
-}
+config.accessKey = commander.accessKey || (config.keys ? config.keys.accessKey : void 0);
+config.secretKey = commander.secretKey || (config.keys ? config.keys.secretKey : void 0);
 config.host = commander.host || config.host;
 config.port = commander.port || config.port;
+config.filesDest = commander.outputDir || config.filesDest;
 config.applicationId = commander.applicationId || config.applicationId;
-globSrc = config.filesSrc;
 
 config = defaults(config, _config);
 
+globSrc = config.filesSrc;
 // If src paths have been provided
 if (commander.args.length > 0) {
   globSrc = commander.args;
 }
 
 if (globSrc && globSrc.length) {
-  var filesSrc = [];
+  filesSrc = [];
   // Iterate `globSrc` to build a list of source files into `filesSrc`
   for (let i = 0, l = globSrc.length; i < l; ++i) {
     // Calling sync `glob` because async is pointless for the CLI use case
@@ -67,9 +63,9 @@ if (globSrc && globSrc.length) {
 
 const {
   applicationId,
-  output: filesDest,
   accessKey,
   secretKey,
+  filesDest,
   host,
   port
 } = config;

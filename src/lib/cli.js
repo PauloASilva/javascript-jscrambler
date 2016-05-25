@@ -3,40 +3,40 @@ import snakeCase from 'snake-case';
 
 // Override params file changes with any specified command line options
 // TODO Populate this list based on an external JSON
-// FIXME This list is deprecated
 const isBoolFlag = {
-  assertsElimination: false,
-  browserOsLock: false,
-  constantFolding: true,
-  deadCode: true,
-  deadCodeElimination: true,
-  debuggingCodeElimination: false,
-  dictionaryCompression: true,
-  domainLock: false,
-  domainLockWarningFunction: false,
-  dotNotationElimination: true,
-  exceptionsList: false,
-  expirationDate: false,
-  expirationDateWarningFunction: false,
+  booleanToAnything: true,
+  charToTernaryOperator: false,
+  commaOperatorUnfolding: true,
+  controlFlowFlattening: false,
+  deadCodeInjection: true,
+  dotToBracketNotation: true,
+  duplicateLiteralsRemoval: false,
+  extendPredicates: true,
   functionOutlining: true,
   functionReorder: true,
-  ignoreFiles: false,
-  literalHooking: false,
-  literalDuplicates: true,
-  memberEnumeration: true,
-  mode: false,
-  namePrefix: false,
-  renameAll: false,
-  renameInclude: false,
-  renameLocal: true,
-  selfDefending: false,
+  identifiersRenaming: false,
+  numberToString: true,
+  propertyKeysObfuscation: true,
+  propertyKeysReordering: true,
+  regexObfuscation: true,
+  stringConcealing: true,
+  stringEncoding: true,
   stringSplitting: false,
-  whitespace: true,
+  variableGrouping: true,
+  assertionsRemoval: false,
+  constantFolding: true,
+  deadCodeElimination: true,
+  debugCodeElimination: false,
+  whitespaceRemoval: true,
+  selfDefending: false,
+  browserLock: false,
+  dateLock: false,
+  domainLock: false,
+  osLock: false,
   preserveAnnotations: true
 };
 
-// Convert from command line option format to snake case for the JScrambler API.
-// It also replaces truthy boolean flags with %DEFAULT% values
+// Convert from command line option format to JScrambler API format.
 export function mergeAndParseParams (commander, params) {
   params = clone(params || {});
 
