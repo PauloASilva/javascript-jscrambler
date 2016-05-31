@@ -24,17 +24,20 @@ Here's an example of what your `.jscramblerrc` file should look like:
     "accessKey": "AAAA",
     "secretKey": "SSSS"
   },
+  "applicationId": "XXXXX",
   "filesSrc": [
     "/path/to/src.html",
     "/path/to/src.js"
   ],
   "filesDest": "/path/to/destDir/",
-  "params": {
-    "functionOutlining": true
-  }
+  "parameters": [
+    {
+      "name": "functionOutlining"
+    }
+  ]
 }
 ```
-Please, replace the `AAAA` and `SSSS` placeholders with your API credentials.
+Please, replace the `AAAA`, `SSSS` and `XXXXX` placeholders with your API credentials and Application ID.
 
 ## CLI
 ```bash
@@ -98,15 +101,17 @@ import jScrambler from 'javascript-jscrambler';
         },
         host: 'api4.jscrambler.com', 
         port: 443, 
-        applicationId: 'APP_ID', 
+        applicationId: 'APP_ID',
         filesSrc: [
           '/path/to/src.html',
           '/path/to/src.js'
         ], 
         filesDest: '/path/to/destDir/', 
-        params: {
-          functionOutlining: true
-        }
+        parameters: [
+          {
+            'name': 'functionOutlining'
+          }
+        ]
       });
   } catch (err) {
     console.error(err);
