@@ -1,0 +1,75 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.mergeAndParseParams = mergeAndParseParams;
+
+var _lodash = require('lodash.clone');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _snakeCase = require('snake-case');
+
+var _snakeCase2 = _interopRequireDefault(_snakeCase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Override params file changes with any specified command line options
+// TODO Populate this list based on an external JSON
+var isBoolFlag = {
+  booleanToAnything: true,
+  charToTernaryOperator: false,
+  commaOperatorUnfolding: true,
+  controlFlowFlattening: false,
+  deadCodeInjection: true,
+  dotToBracketNotation: true,
+  duplicateLiteralsRemoval: false,
+  extendPredicates: true,
+  functionOutlining: true,
+  functionReorder: true,
+  identifiersRenaming: false,
+  numberToString: true,
+  propertyKeysObfuscation: true,
+  propertyKeysReordering: true,
+  regexObfuscation: true,
+  stringConcealing: true,
+  stringEncoding: true,
+  stringSplitting: false,
+  variableGrouping: true,
+  assertionsRemoval: false,
+  constantFolding: true,
+  deadCodeElimination: true,
+  debugCodeElimination: false,
+  whitespaceRemoval: true,
+  selfDefending: false,
+  browserLock: false,
+  dateLock: false,
+  domainLock: false,
+  osLock: false,
+  preserveAnnotations: true
+};
+
+// Convert from command line option format to JScrambler API format.
+function mergeAndParseParams(commander, params) {
+  params = (0, _lodash2.default)(params || {});
+
+  for (var name in isBoolFlag) {
+    if (commander[name] !== undefined) {
+      var snakeCaseName = (0, _snakeCase2.default)(name);
+      if (isBoolFlag[name] === true) {
+        params[snakeCaseName] = {
+          status: 1
+        };
+      } else {
+        params[snakeCaseName] = commander[name];
+      }
+      if (typeof params[snakeCaseName].status === 'undefined') {
+        params[snakeCaseName].status = 1;
+      }
+    }
+  }
+
+  return params;
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9saWIvY2xpLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7O1FBdUNnQixtQixHQUFBLG1COztBQXZDaEI7Ozs7QUFDQTs7Ozs7Ozs7QUFJQSxJQUFNLGFBQWE7QUFDakIscUJBQW1CLElBREY7QUFFakIseUJBQXVCLEtBRk47QUFHakIsMEJBQXdCLElBSFA7QUFJakIseUJBQXVCLEtBSk47QUFLakIscUJBQW1CLElBTEY7QUFNakIsd0JBQXNCLElBTkw7QUFPakIsNEJBQTBCLEtBUFQ7QUFRakIsb0JBQWtCLElBUkQ7QUFTakIscUJBQW1CLElBVEY7QUFVakIsbUJBQWlCLElBVkE7QUFXakIsdUJBQXFCLEtBWEo7QUFZakIsa0JBQWdCLElBWkM7QUFhakIsMkJBQXlCLElBYlI7QUFjakIsMEJBQXdCLElBZFA7QUFlakIsb0JBQWtCLElBZkQ7QUFnQmpCLG9CQUFrQixJQWhCRDtBQWlCakIsa0JBQWdCLElBakJDO0FBa0JqQixtQkFBaUIsS0FsQkE7QUFtQmpCLG9CQUFrQixJQW5CRDtBQW9CakIscUJBQW1CLEtBcEJGO0FBcUJqQixtQkFBaUIsSUFyQkE7QUFzQmpCLHVCQUFxQixJQXRCSjtBQXVCakIsd0JBQXNCLEtBdkJMO0FBd0JqQixxQkFBbUIsSUF4QkY7QUF5QmpCLGlCQUFlLEtBekJFO0FBMEJqQixlQUFhLEtBMUJJO0FBMkJqQixZQUFVLEtBM0JPO0FBNEJqQixjQUFZLEtBNUJLO0FBNkJqQixVQUFRLEtBN0JTO0FBOEJqQix1QkFBcUI7QUE5QkosQ0FBbkI7OztBQWtDTyxTQUFTLG1CQUFULENBQThCLFNBQTlCLEVBQXlDLE1BQXpDLEVBQWlEO0FBQ3RELFdBQVMsc0JBQU0sVUFBVSxFQUFoQixDQUFUOztBQUVBLE9BQUssSUFBSSxJQUFULElBQWlCLFVBQWpCLEVBQTZCO0FBQzNCLFFBQUksVUFBVSxJQUFWLE1BQW9CLFNBQXhCLEVBQW1DO0FBQ2pDLFVBQUksZ0JBQWdCLHlCQUFVLElBQVYsQ0FBcEI7QUFDQSxVQUFJLFdBQVcsSUFBWCxNQUFxQixJQUF6QixFQUErQjtBQUM3QixlQUFPLGFBQVAsSUFBd0I7QUFDdEIsa0JBQVE7QUFEYyxTQUF4QjtBQUdELE9BSkQsTUFJTztBQUNMLGVBQU8sYUFBUCxJQUF3QixVQUFVLElBQVYsQ0FBeEI7QUFDRDtBQUNELFVBQUksT0FBTyxPQUFPLGFBQVAsRUFBc0IsTUFBN0IsS0FBd0MsV0FBNUMsRUFBeUQ7QUFDdkQsZUFBTyxhQUFQLEVBQXNCLE1BQXRCLEdBQStCLENBQS9CO0FBQ0Q7QUFDRjtBQUNGOztBQUVELFNBQU8sTUFBUDtBQUNEIiwiZmlsZSI6ImNsaS5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBjbG9uZSBmcm9tICdsb2Rhc2guY2xvbmUnO1xuaW1wb3J0IHNuYWtlQ2FzZSBmcm9tICdzbmFrZS1jYXNlJztcblxuLy8gT3ZlcnJpZGUgcGFyYW1zIGZpbGUgY2hhbmdlcyB3aXRoIGFueSBzcGVjaWZpZWQgY29tbWFuZCBsaW5lIG9wdGlvbnNcbi8vIFRPRE8gUG9wdWxhdGUgdGhpcyBsaXN0IGJhc2VkIG9uIGFuIGV4dGVybmFsIEpTT05cbmNvbnN0IGlzQm9vbEZsYWcgPSB7XG4gIGJvb2xlYW5Ub0FueXRoaW5nOiB0cnVlLFxuICBjaGFyVG9UZXJuYXJ5T3BlcmF0b3I6IGZhbHNlLFxuICBjb21tYU9wZXJhdG9yVW5mb2xkaW5nOiB0cnVlLFxuICBjb250cm9sRmxvd0ZsYXR0ZW5pbmc6IGZhbHNlLFxuICBkZWFkQ29kZUluamVjdGlvbjogdHJ1ZSxcbiAgZG90VG9CcmFja2V0Tm90YXRpb246IHRydWUsXG4gIGR1cGxpY2F0ZUxpdGVyYWxzUmVtb3ZhbDogZmFsc2UsXG4gIGV4dGVuZFByZWRpY2F0ZXM6IHRydWUsXG4gIGZ1bmN0aW9uT3V0bGluaW5nOiB0cnVlLFxuICBmdW5jdGlvblJlb3JkZXI6IHRydWUsXG4gIGlkZW50aWZpZXJzUmVuYW1pbmc6IGZhbHNlLFxuICBudW1iZXJUb1N0cmluZzogdHJ1ZSxcbiAgcHJvcGVydHlLZXlzT2JmdXNjYXRpb246IHRydWUsXG4gIHByb3BlcnR5S2V5c1Jlb3JkZXJpbmc6IHRydWUsXG4gIHJlZ2V4T2JmdXNjYXRpb246IHRydWUsXG4gIHN0cmluZ0NvbmNlYWxpbmc6IHRydWUsXG4gIHN0cmluZ0VuY29kaW5nOiB0cnVlLFxuICBzdHJpbmdTcGxpdHRpbmc6IGZhbHNlLFxuICB2YXJpYWJsZUdyb3VwaW5nOiB0cnVlLFxuICBhc3NlcnRpb25zUmVtb3ZhbDogZmFsc2UsXG4gIGNvbnN0YW50Rm9sZGluZzogdHJ1ZSxcbiAgZGVhZENvZGVFbGltaW5hdGlvbjogdHJ1ZSxcbiAgZGVidWdDb2RlRWxpbWluYXRpb246IGZhbHNlLFxuICB3aGl0ZXNwYWNlUmVtb3ZhbDogdHJ1ZSxcbiAgc2VsZkRlZmVuZGluZzogZmFsc2UsXG4gIGJyb3dzZXJMb2NrOiBmYWxzZSxcbiAgZGF0ZUxvY2s6IGZhbHNlLFxuICBkb21haW5Mb2NrOiBmYWxzZSxcbiAgb3NMb2NrOiBmYWxzZSxcbiAgcHJlc2VydmVBbm5vdGF0aW9uczogdHJ1ZVxufTtcblxuLy8gQ29udmVydCBmcm9tIGNvbW1hbmQgbGluZSBvcHRpb24gZm9ybWF0IHRvIEpTY3JhbWJsZXIgQVBJIGZvcm1hdC5cbmV4cG9ydCBmdW5jdGlvbiBtZXJnZUFuZFBhcnNlUGFyYW1zIChjb21tYW5kZXIsIHBhcmFtcykge1xuICBwYXJhbXMgPSBjbG9uZShwYXJhbXMgfHwge30pO1xuXG4gIGZvciAobGV0IG5hbWUgaW4gaXNCb29sRmxhZykge1xuICAgIGlmIChjb21tYW5kZXJbbmFtZV0gIT09IHVuZGVmaW5lZCkge1xuICAgICAgbGV0IHNuYWtlQ2FzZU5hbWUgPSBzbmFrZUNhc2UobmFtZSk7XG4gICAgICBpZiAoaXNCb29sRmxhZ1tuYW1lXSA9PT0gdHJ1ZSkge1xuICAgICAgICBwYXJhbXNbc25ha2VDYXNlTmFtZV0gPSB7XG4gICAgICAgICAgc3RhdHVzOiAxXG4gICAgICAgIH07XG4gICAgICB9IGVsc2Uge1xuICAgICAgICBwYXJhbXNbc25ha2VDYXNlTmFtZV0gPSBjb21tYW5kZXJbbmFtZV07XG4gICAgICB9XG4gICAgICBpZiAodHlwZW9mIHBhcmFtc1tzbmFrZUNhc2VOYW1lXS5zdGF0dXMgPT09ICd1bmRlZmluZWQnKSB7XG4gICAgICAgIHBhcmFtc1tzbmFrZUNhc2VOYW1lXS5zdGF0dXMgPSAxO1xuICAgICAgfVxuICAgIH1cbiAgfVxuXG4gIHJldHVybiBwYXJhbXM7XG59XG4iXX0=
