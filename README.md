@@ -30,11 +30,13 @@ Here's an example of what your `.jscramblerrc` file should look like:
     "/path/to/src.js"
   ],
   "filesDest": "/path/to/destDir/",
-  "parameters": [
-    {
-      "name": "functionOutlining"
+  "params": {
+    // transformations
+    "stringSplitting": {
+        // transformation options
+        "chunk": 1
     }
-  ]
+  }
 }
 ```
 Please, replace the `AAAA`, `SSSS` and `XXXXX` placeholders with your API credentials and Application ID.
@@ -107,11 +109,11 @@ import jScrambler from 'javascript-jscrambler';
           '/path/to/src.js'
         ],
         filesDest: '/path/to/destDir/',
-        parameters: [
-          {
-            'name': 'functionOutlining'
+        params: {
+          stringSplitting: {
+            chunk: 1
           }
-        ]
+        }
       });
   } catch (err) {
     console.error(err);

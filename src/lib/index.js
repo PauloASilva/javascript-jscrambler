@@ -157,11 +157,11 @@ export default {
     }
 
     if (params && Object.keys(params).length) {
-      const areParametersOrdered = Array.isArray(params);
+      const areSubscribersOrdered = Array.isArray(params);
       const updateApplicationRes = await this.updateApplication(client, {
         _id: applicationId,
         parameters: JSON.stringify(normalizeParameters(params)),
-        areParametersOrdered
+        areSubscribersOrdered
       });
       if (updateApplicationRes.errors) {
         console.error(updateApplicationRes.errors);
