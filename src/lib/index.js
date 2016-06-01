@@ -134,7 +134,16 @@ export default {
 
       const removeSourceRes = await this.removeSourceFromApplication(client, '', applicationId);
       if (removeSourceRes.errors) {
-        throw new Error('Error removing application sources');
+        // TODO Implement error codes or fix this is on the services
+        var hadNoSources = false;
+        removeSourceRes.errors.forEach(function (error) {
+          if (error.message === 'Application Source with the given ID does not exist') {
+            hadNoSources = true;
+          }
+        });
+        if (!hadNoSources) {
+          throw new Error('Error removing application sources');
+        }
       }
 
       const addApplicationSourceRes = await this.addApplicationSource(client, applicationId, {
