@@ -9,7 +9,6 @@ import path from 'path';
 
 import _config from '../lib/config';
 import jScrambler from '../lib';
-import {mergeAndParseParams} from '../lib/cli';
 
 commander
   .version(require('../../package.json').version)
@@ -17,7 +16,7 @@ commander
   .option('-a, --access-key <accessKey>', 'Access key')
   .option('-c, --config <config>', 'JScrambler configuration options')
   .option('-h, --host <host>', 'Hostname')
-  .option('-i, --applicationId <id>', 'Application ID')
+  .option('-i, --application-id <id>', 'Application ID')
   .option('-o, --output-dir <dir>', 'Output directory')
   .option('-p, --port <port>', 'Port')
   .option('-s, --secret-key <secretKey>', 'Secret key')
@@ -70,7 +69,7 @@ const {
   port
 } = config;
 
-const params = mergeAndParseParams(commander, config.params);
+const params = config.params;
 
 // Go, go, go
 (async () => {
