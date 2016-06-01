@@ -9,6 +9,7 @@ import path from 'path';
 
 import _config from '../lib/config';
 import jScrambler from '../lib';
+import {mergeAndParseParams} from '../lib/cli';
 
 commander
   .version(require('../../package.json').version)
@@ -69,7 +70,7 @@ const {
   port
 } = config;
 
-const params = config.params;
+const params = mergeAndParseParams(commander, config.params);
 
 // Go, go, go
 (async () => {
