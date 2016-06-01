@@ -4,7 +4,7 @@ import rc from 'rc';
 // getting variables from `argv`.
 const config = rc('jscrambler', {
   keys: {},
-  host: 'api.jscrambler.com',
+  host: 'api4.jscrambler.com',
   port: 443
 }, []);
 
