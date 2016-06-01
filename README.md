@@ -52,7 +52,7 @@ npm install -g jscrambler
     -a, --access-key <accessKey>  Access key
     -c, --config <config>         JScrambler configuration options
     -h, --host <host>             Hostname
-    -i, --applicationId <id>      Application ID
+    -i, --application-id <id>      Application ID
     -o, --output-dir <dir>        Output directory
     -p, --port <port>             Port
     -s, --secret-key <secretKey>  Secret key
@@ -96,17 +96,17 @@ import jScrambler from 'javascript-jscrambler';
     await jScrambler
       .protectAndDownload({
         keys: {
-          accessKey: 'AAAA', 
-          secretKey: 'SSSS' 
+          accessKey: 'AAAA',
+          secretKey: 'SSSS'
         },
-        host: 'api4.jscrambler.com', 
-        port: 443, 
+        host: 'api4.jscrambler.com',
+        port: 443,
         applicationId: 'APP_ID',
         filesSrc: [
           '/path/to/src.html',
           '/path/to/src.js'
-        ], 
-        filesDest: '/path/to/destDir/', 
+        ],
+        filesDest: '/path/to/destDir/',
         parameters: [
           {
             'name': 'functionOutlining'
