@@ -31,15 +31,17 @@ Here's an example of what your `.jscramblerrc` file should look like:
   ],
   "filesDest": "/path/to/destDir/",
   "params": {
-    // transformations
     "stringSplitting": {
-        // transformation options
         "chunk": 1
     }
   }
 }
 ```
+
 Please, replace the `AAAA`, `SSSS` and `XXXXX` placeholders with your API credentials and Application ID.
+
+You can also download this file through Jscrambler's application builder. More
+information can be found [here](https://docs.jscrambler.com/api/clients.html).
 
 ## CLI
 ```bash
@@ -89,6 +91,7 @@ where `config.json` is an object optionally containing any of the JScrambler opt
 ```bash
 npm install javascript-jscrambler
 ```
+
 ### Quick example
 ```javascript
 import jScrambler from 'javascript-jscrambler';
@@ -120,6 +123,8 @@ import jScrambler from 'javascript-jscrambler';
   }
 })();
 ```
+
+More detailed informations can be found [here](https://docs.jscrambler.com/api/clients.html).
 
 ## JScrambler Parameters
 
