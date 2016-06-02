@@ -142,7 +142,7 @@ export default {
           }
         });
         if (!hadNoSources) {
-          throw new Error('Error removing application sources');
+          throw new Error(removeSourceRes.errors[0].message);
         }
       }
 
@@ -151,9 +151,7 @@ export default {
         filename: 'application.zip',
         extension: 'zip'
       });
-      if (addApplicationSourceRes.errors) {
-        throw new Error('Error uploading files');
-      }
+      errorHandler(addApplicationSourceRes);
     }
 
     if (params && Object.keys(params).length) {
@@ -163,22 +161,17 @@ export default {
         parameters: JSON.stringify(normalizeParameters(params)),
         areSubscribersOrdered
       });
-      if (updateApplicationRes.errors) {
-        console.error(updateApplicationRes.errors);
-        throw new Error('Error updating the application');
-      }
+      errorHandler(updateApplicationRes);
     }
 
     const createApplicationProtectionRes = await this.createApplicationProtection(client, applicationId);
-    if (createApplicationProtectionRes.errors) {
-      console.error(createApplicationProtectionRes.errors);
-      throw new Error('Error creating application protection');
-    }
+    errorHandler(createApplicationProtectionRes);
 
     const protectionId = createApplicationProtectionRes.data.createApplicationProtection._id;
     await this.pollProtection(client, applicationId, protectionId);
 
     const download = await this.downloadApplicationProtection(client, protectionId);
+    errorHandler(download);
     unzip(download, filesDest || destCallback);
   },
   //
@@ -208,91 +201,91 @@ export default {
   async createApplication (client, data, fragments) {
     const deferred = Q.defer();
     client.post('/application', createApplication(data, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async duplicateApplication (client, data, fragments) {
     const deferred = Q.defer();
     client.post('/application', duplicateApplication(data, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async removeApplication (client, id) {
     const deferred = Q.defer();
     client.post('/application', removeApplication(id), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async removeProtection (client, id, appId, fragments) {
     const deferred = Q.defer();
     client.post('/application', removeProtection(id, appId, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async updateApplication (client, application, fragments) {
     const deferred = Q.defer();
     client.post('/application', updateApplication(application, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async unlockApplication (client, application, fragments) {
     const deferred = Q.defer();
     client.post('/application', unlockApplication(application, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async getApplication (client, applicationId, fragments) {
     const deferred = Q.defer();
     client.get('/application', getApplication(applicationId, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async getApplicationSource (client, sourceId, fragments, limits) {
     const deferred = Q.defer();
     client.get('/application', getApplicationSource(sourceId, fragments, limits), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async getApplicationProtections (client, applicationId, params, fragments) {
     const deferred = Q.defer();
     client.get('/application', getApplicationProtections(applicationId, params, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async getApplicationProtectionsCount (client, applicationId, fragments) {
     const deferred = Q.defer();
     client.get('/application', getApplicationProtectionsCount(applicationId, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async createTemplate (client, template, fragments) {
     const deferred = Q.defer();
     client.post('/application', createTemplate(template, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async removeTemplate (client, id) {
     const deferred = Q.defer();
     client.post('/application', removeTemplate(id), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async getTemplates (client, fragments) {
     const deferred = Q.defer();
     client.get('/application', getTemplates(fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async getApplications (client, fragments) {
     const deferred = Q.defer();
     client.get('/application', getApplications(fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async addApplicationSource (client, applicationId, applicationSource, fragments) {
     const deferred = Q.defer();
     client.post('/application', addApplicationSource(applicationId, applicationSource, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async addApplicationSourceFromURL (client, applicationId, url, fragments) {
@@ -301,50 +294,49 @@ export default {
       .then(function(file) {
         client.post('/application', addApplicationSource(applicationId, file, fragments), responseHandler(deferred));
         return deferred.promise;
-      })
-      .then(errorHandler);
+      });
   },
   //
   async updateApplicationSource (client, applicationSource, fragments) {
     const deferred = Q.defer();
     client.post('/application', updateApplicationSource(applicationSource, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async removeSourceFromApplication (client, sourceId, applicationId, fragments) {
     const deferred = Q.defer();
     client.post('/application', removeSourceFromApplication(sourceId, applicationId, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async applyTemplate (client, templateId, appId, fragments) {
     const deferred = Q.defer();
     client.post('/application', applyTemplate(templateId, appId, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async updateTemplate (client, template, fragments) {
     const deferred = Q.defer();
     client.post('/application', updateTemplate(template, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async createApplicationProtection (client, applicationId, fragments) {
     const deferred = Q.defer();
     client.post('/application', createApplicationProtection(applicationId, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async getApplicationProtection (client, applicationId, protectionId, fragments) {
     const deferred = Q.defer();
     client.get('/application', getProtection(applicationId, protectionId, fragments), responseHandler(deferred));
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   },
   //
   async downloadApplicationProtection (client, protectionId) {
     const deferred = Q.defer();
     client.get(`/application/download/${protectionId}`, null, responseHandler(deferred), false);
-    return deferred.promise.then(errorHandler);
+    return deferred.promise;
   }
 };
 
@@ -388,7 +380,7 @@ function responseHandler (deferred) {
 function errorHandler (res) {
   if (res.errors && res.errors.length) {
     res.errors.forEach(function (error) {
-      console.error(error.message);
+      throw new Error(error.message);
     });
   }
 
