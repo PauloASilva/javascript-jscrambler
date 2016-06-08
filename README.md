@@ -1,4 +1,4 @@
-# ![jscrambler](media/jscrambler-logo.png)
+# ![jscrambler](https://rawgithub.com/jscrambler/javascript-jscrambler/master/media/jscrambler-logo.png)
 Jscrambler Client for Browser and Node.js
 
 > DISCLAIMER: If you are looking for Jscrambler 3.8 or below please go to [this page](https://github.com/jscrambler/node-jscrambler).
