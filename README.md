@@ -1,4 +1,7 @@
-# JScrambler Client for Browser and Node.js
+# ![jscrambler](media/jscrambler-logo.png)
+Jscrambler Client for Browser and Node.js
+
+> DISCLAIMER: If you are looking for Jscrambler 3.8 or below please go to [this page](https://github.com/jscrambler/node-jscrambler).
 
 - [RC configuration](#rc-configuration)
 - [CLI](#cli)
@@ -12,14 +15,12 @@
 - [JScrambler Parameters](#jscrambler-parameters)
 
 ## RC configuration
-You may put your access and secret keys into a config file if found in [these directories](https://github.com/dominictarr/rc#standards). Besides simplifying the command entry, this has the added benefit of not logging your JScrambler credentials.
+You may put your access and secret keys into a config file if found in [these directories](https://github.com/dominictarr/rc#standards). Besides simplifying the command entry, this has the added benefit of not logging your Jscrambler credentials.
 
 Here's an example of what your `.jscramblerrc` file should look like:
 
 ```json
 {
-  "host": "api4.jscrambler.com",
-  "port": 443,
   "keys": {
     "accessKey": "AAAA",
     "secretKey": "SSSS"
@@ -30,11 +31,15 @@ Here's an example of what your `.jscramblerrc` file should look like:
     "/path/to/src.js"
   ],
   "filesDest": "/path/to/destDir/",
-  "params": {
-    "stringSplitting": {
+  "params": [
+    {
+      "name": "stringSplitting",
+      "options": {
         "chunk": 1
+      }
     }
-  }
+  ],
+  "areSubscribersOrdered": false
 }
 ```
 
