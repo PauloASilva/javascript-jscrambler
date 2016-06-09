@@ -67,7 +67,10 @@ const {
   secretKey,
   filesDest,
   host,
-  port
+  port,
+  applicationTypes,
+  languageSpecifications,
+  areSubscribersOrdered
 } = config;
 
 const params = mergeAndParseParams(commander, config.params);
@@ -86,7 +89,10 @@ const params = mergeAndParseParams(commander, config.params);
         applicationId,
         filesSrc,
         filesDest,
-        params
+        params,
+        applicationTypes,
+        languageSpecifications,
+        areSubscribersOrdered
       });
   } catch (error) {
     console.error(error);

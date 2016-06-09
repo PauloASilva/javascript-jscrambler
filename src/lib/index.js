@@ -96,7 +96,9 @@ export default {
       filesDest,
       filesSrc,
       cwd,
-      params
+      params,
+      applicationTypes,
+      languageSpecifications
     } = config;
 
     const {
@@ -154,13 +156,30 @@ export default {
       errorHandler(addApplicationSourceRes);
     }
 
+    const $set = {
+      _id: applicationId
+    };
+
     if (params && Object.keys(params).length) {
-      const areSubscribersOrdered = Array.isArray(params);
-      const updateApplicationRes = await this.updateApplication(client, {
-        _id: applicationId,
-        parameters: JSON.stringify(normalizeParameters(params)),
-        areSubscribersOrdered
-      });
+      $set.parameters = JSON.stringify(normalizeParameters(params));
+      $set.areSubscribersOrdered = Array.isArray(params);
+    }
+
+    if (typeof areSubscribersOrdered !== 'undefined') {
+      $set.areSubscribersOrdered = areSubscribersOrdered;
+    }
+
+    if (applicationTypes) {
+      $set.applicationTypes = applicationTypes;
+    }
+
+    if (languageSpecifications) {
+      $set.languageSpecifications = languageSpecifications;
+    }
+
+    if ($set.parameters || $set.applicationTypes || $set.languageSpecifications ||
+        typeof $set.areSubscribersOrdered !== 'undefined') {
+      const updateApplicationRes = await this.updateApplication(client, $set);
       errorHandler(updateApplicationRes);
     }
 
