@@ -65,6 +65,14 @@ JScramblerClient.prototype.request = function (method, path, params = {}, callba
 
   if (this.token) {
     params.token = this.token;
+  } else {
+    if (!this.options.keys.accessKey) {
+      throw new Error('Required *accessKey* not provided');
+    }
+
+    if (!this.options.keys.secretKey) {
+      throw new Error('Required *secretKey* not provided');
+    }
   }
 
   var _keys = keys(params);
