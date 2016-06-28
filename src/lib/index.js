@@ -206,6 +206,8 @@ export default {
         const state = applicationProtection.data.applicationProtection.state;
         if (state !== 'finished' && state !== 'errored') {
           setTimeout(poll, 500);
+        } else if (state === 'errored') {
+          deferred.reject('Protection failed. For more information visit: https://app.jscrambler.com');
         } else {
           deferred.resolve();
         }
