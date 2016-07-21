@@ -22,7 +22,8 @@ import {
   removeProtection,
   duplicateApplication,
   unlockApplication,
-  applyTemplate
+  applyTemplate,
+  addUser
 } from './mutations';
 import {
   getApplication,
@@ -355,6 +356,12 @@ export default {
   async downloadApplicationProtection (client, protectionId) {
     const deferred = Q.defer();
     client.get(`/application/download/${protectionId}`, null, responseHandler(deferred), false);
+    return deferred.promise;
+  },
+  //
+  async addUser (client, email, passwd, fragments) {
+    const deferred = Q.defer();
+    client.post('/user', addUser(email, passwd, fragments), responseHandler(deferred));
     return deferred.promise;
   }
 };

@@ -298,3 +298,24 @@ export function applyTemplate (templateId, appId, fragments = applyTemplateDefau
     }
   };
 }
+
+const addUserDefaultFragments = `
+  _id,
+  parameters
+`;
+
+export function addUser (email, passwd, fragments = addUserDefaultFragments) {
+  return {
+    query: `
+      mutation addUser ($email: String!, $passwd: String!) {
+        addUser (email: $email, passwd: $passwd) {
+          email
+        }
+      }
+    `,
+    params: {
+      email,
+      passwd
+    }
+  };
+}
