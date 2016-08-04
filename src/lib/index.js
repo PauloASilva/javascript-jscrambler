@@ -207,7 +207,8 @@ export default {
         if (state !== 'finished' && state !== 'errored') {
           setTimeout(poll, 500);
         } else if (state === 'errored') {
-          deferred.reject('Protection failed. For more information visit: https://app.jscrambler.com');
+          const url = `https://app.jscrambler.com/app/${applicationId}/protections/${protectionId}`;
+          deferred.reject(`Protection failed. For more information visit: ${url}`);
         } else {
           deferred.resolve();
         }
